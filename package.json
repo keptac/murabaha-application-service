@@ -1,10 +1,10 @@
 {
-  "name": "westminster-backend",
+  "name": "murabaha-application-service",
   "version": "1.0.0",
-  "description": "westminster reporting system",
+  "description": "Sharia Compliance Loan Process smart contract integration service",
   "main": "index.js",
   "scripts": {
-    "test": "test-westminster",
+    "test": "test-murabaha",
     "start": "node .",
     "dev": "nodemon index.js"
   },
@@ -13,15 +13,15 @@
     "url": "git+https://github.com/keptac/westminster-backend.git"
   },
   "keywords": [
-    "westminster",
+    "luna",
     "keptac",
-    "techvivid",
+    "kelvin",
     "school",
     "management",
     "system",
     "elearning"
   ],
-  "author": "Chelenje",
+  "author": "Kelvin Chelenje",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/keptac/westminster-backend/issues"

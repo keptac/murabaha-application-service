@@ -1,29 +1,9 @@
 const express = require('express');
 require('dotenv').config();
 
-var app = express(), port = process.env.PORT, mongoose = require('mongoose');
-
-//Register Models
-const announcement = require('./src/models/AnnouncementsModel');
-const classes = require('./src/models/ClassesModel');
-const reportSubmissions = require('./src/models/ReportSubmissionsModel'); 
-const student = require('./src/models/StudentModel');
-const staff = require('./src/models/StaffModel');
-const studentMarks = require('./src/models/StudentMarksModel'); 
-const subjects = require('./src/models/SubjectsModel');
-const teacherClasses = require('./src/models/TeacherClassModel');
-const multer = require('multer');
+var app = express(), port = process.env.PORT;
 
 global.__basedir = __dirname;
-
-// mongoose instance connection url connection
-mongoose.Promise = global.Promise;
-mongoose.connect(process.env.DATABASE_URL_DEV,{
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true
-}); 
 
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
@@ -34,12 +14,10 @@ var allowCrossDomain = function(req, res, next) {
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use('/public', express.static('public'));
-app.use('/uploads', express.static('uploads'));
 app.use(allowCrossDomain);
 
 //register the route
-var routes = require('./src/routes/esmRoutes');
+var routes = require('./src/routes/funderjetRoutes');
 routes(app); 
 
 app.use(function(req, res) {
@@ -47,4 +25,4 @@ app.use(function(req, res) {
 });
 
 app.listen(port);
-console.log('Westminster api server started on: ' + port);
+console.log('Funderjet api server started on: ' + port);
