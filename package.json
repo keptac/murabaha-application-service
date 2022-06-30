@@ -10,34 +10,29 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/keptac/westminster-backend.git"
+    "url": "git+https://github.com/keptac/murabaha-application-service.git"
   },
   "keywords": [
     "luna",
     "keptac",
-    "kelvin",
-    "school",
-    "management",
+    "chelenje",
+    "loans",
+    "funderjet",
     "system",
-    "elearning"
+    "blockchain"
   ],
   "author": "Kelvin Chelenje",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/keptac/westminster-backend/issues"
+    "url": "https://github.com/keptac/murabaha-application-service/issues"
   },
-  "homepage": "https://github.com/keptac/westminster-backend#readme",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
+    "@grpc/grpc-js": "^1.6.7",
+    "@hyperledger/fabric-gateway": "^1.1.0",
     "body-parser": "^1.19.0",
-    "convert-excel-to-json": "^1.7.0",
     "dotenv": "^10.0.0",
-    "downloads-folder": "^3.0.1",
     "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.14",
-    "multer": "^1.4.2",
-    "read-excel-file": "^5.2.7"
+    "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
