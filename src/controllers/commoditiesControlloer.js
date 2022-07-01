@@ -1,37 +1,13 @@
 'use strict';
 
-/*
- * Copyright IBM Corp. All Rights Reserved.
- *
- * SPDX-License-Identifier: Apache-2.0
- */
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const grpc = __importStar(require("@grpc/grpc-js"));
-const fabric_gateway_1 = require("@hyperledger/fabric-gateway");
-const crypto = __importStar(require("crypto"));
-const fs_1 = require("fs");
-const { get } = require("http");
-const path = __importStar(require("path"));
-const util_1 = require("util");
+const grpc = require("@grpc/grpc-js");
+const fabric_gateway = require("@hyperledger/fabric-gateway");
+const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
+const util = require("util");
+const moment = require("moment");
+
 const channelName = envOrDefault('CHANNEL_NAME', 'funderjet');
 const chaincodeName = envOrDefault('CHAINCODE_NAME', 'basic');
 const mspId = envOrDefault('MSP_ID', 'Org1MSP');
@@ -47,19 +23,17 @@ const tlsCertPath = envOrDefault('TLS_CERT_PATH', path.resolve(cryptoPath, 'peer
 const peerEndpoint = envOrDefault('PEER_ENDPOINT', 'localhost:7051');
 // Gateway peer SSL host name override.
 const peerHostAlias = envOrDefault('PEER_HOST_ALIAS', 'peer0.org1.example.com');
-const utf8Decoder = new util_1.TextDecoder();
+const utf8Decoder = new util.TextDecoder();
 const assetId = `asset${Date.now()}`;
 let client; 
 let gateway;
 
 
-
 //Initialization of Network connections
 async function initializeGRpcConnection() {
-
     // The gRPC client connection should be shared by all Gateway connections to this endpoint.
     client = await newGrpcConnection();
-    gateway = (0, fabric_gateway_1.connect)({
+    gateway = (0, fabric_gateway.connect)({
         client,
         identity: await newIdentity(),
         signer: await newSigner(),
@@ -79,9 +53,8 @@ async function initializeGRpcConnection() {
     });
 }
 
-
 async function newGrpcConnection() {
-    const tlsRootCert = await fs_1.promises.readFile(tlsCertPath);
+    const tlsRootCert = await fs.promises.readFile(tlsCertPath);
     const tlsCredentials = grpc.credentials.createSsl(tlsRootCert);
     return new grpc.Client(peerEndpoint, tlsCredentials, {
         'grpc.ssl_target_name_override': peerHostAlias,
@@ -89,44 +62,39 @@ async function newGrpcConnection() {
 }
 
 async function newIdentity() {
-    const credentials = await fs_1.promises.readFile(certPath);
+    const credentials = await fs.promises.readFile(certPath);
     return { mspId, credentials };
 }
 
 async function newSigner() {
-    const files = await fs_1.promises.readdir(keyDirectoryPath);
+    const files = await fs.promises.readdir(keyDirectoryPath);
     const keyPath = path.resolve(keyDirectoryPath, files[0]);
-    const privateKeyPem = await fs_1.promises.readFile(keyPath);
+    const privateKeyPem = await fs.promises.readFile(keyPath);
     const privateKey = crypto.createPrivateKey(privateKeyPem);
-    return fabric_gateway_1.signers.newPrivateKeySigner(privateKey);
+    return fabric_gateway.signers.newPrivateKeySigner(privateKey);
 }
 
 
 /**
- * Evaluate a transaction to query ledger state.
+ * Returns all the current commodities on the ledger
  */
-
 
  exports.getAllCommodities = async function (req, res) {
     await initializeGRpcConnection();
     try {
         
         // Get a network instance representing the channel where the smart contract is deployed.
-        console.log(gateway);
-
         const network = gateway.getNetwork(channelName);
         // Get the smart contract from the network.
         const contract = network.getContract(chaincodeName);
 
-        console.log('\n--> Evaluate Transaction: GetAllCommodities, function returns all the current commodities on the ledger');
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Commodities');
         const resultBytes = await contract.evaluateTransaction('GetAllCommodities');
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
-        console.log('*** Result:', result);
         res.json(result)
     }
     catch(error){
-
         console.log(error)
         res.send(error);
     }

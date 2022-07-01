@@ -1,4 +1,7 @@
 const express = require('express');
+const swaggerUi = require('swagger-ui-express'), swaggerDocument = require('./swagger.json');
+
+
 require('dotenv').config();
 
 
@@ -78,6 +81,8 @@ var allowCrossDomain = function(req, res, next) {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(allowCrossDomain);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 var routes = require('./src/routes/funderjetRoutes');
 routes(app); 

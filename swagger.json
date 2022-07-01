@@ -1,0 +1,98 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Funderjet Murabaha Application Service",
+      "description": "Sharia Compliance Loan Process smart contract integration service API Documentation",
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "host": "localhost:3001",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Commodities",
+            "description": "API for commodities in the network"
+        },
+        {
+            "name": "Loans",
+            "description": "API for commodities in the network"
+        }
+    ],
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    
+    "paths": {
+        "/funderjet/api/commodities": {
+            "get": {
+              "tags": ["Commodities"],
+              "summary": "Get all commodities in the system",
+              "responses": {
+                "200": {
+                  "description": "OK",
+                  "schema": {
+                    "$ref": "#/definitions/Commodities",
+                    "$type":"array"
+                  }
+                  
+                }
+              }
+            }
+         },
+         "/addUser": {
+            "post": {
+              "tags": ["Commodities"],
+              "description": "Create new commodity in system",
+              "parameters": [
+                {
+                  "name": "commodity",
+                  "in": "body",
+                  "description": "Commodity to be uploaded",
+                  "schema": {
+                    "$ref": "#/definitions/Commodities"
+                  }
+                }
+              ],
+              "produces": ["application/json"],
+              "responses": {
+                "200": {
+                  "description": "Commodity upload success",
+                  "schema": {
+                    "$ref": "#/definitions/Commodity"
+                  }
+                }
+              }
+            }
+          }
+    },
+    "definitions": {
+          "Commodity": {
+            "required": ["Description", "Owner", "Value"],
+            "properties": {
+              "CommodityId": {
+                "type": "string",
+                "uniqueItems": true
+              },
+              "Description": {
+                "type": "string"
+              },
+              "Owner": {
+                "type": "string"
+              },
+              "Status": {
+                "type": "string"
+              },
+              "Value": {
+                "type": "number"
+              }
+            }
+          },
+          "Commodities": {
+            "type": "array",
+            "$ref": "#/definitions/Commodity"
+          }
+    }
+}
