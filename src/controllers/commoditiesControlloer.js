@@ -1,46 +1,194 @@
 'use strict';
 
-let mongoose = require('mongoose'), Announcements = mongoose.model('Announcements');
+/*
+ * Copyright IBM Corp. All Rights Reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const grpc = __importStar(require("@grpc/grpc-js"));
+const fabric_gateway_1 = require("@hyperledger/fabric-gateway");
+const crypto = __importStar(require("crypto"));
+const fs_1 = require("fs");
+const { get } = require("http");
+const path = __importStar(require("path"));
+const util_1 = require("util");
+const channelName = envOrDefault('CHANNEL_NAME', 'funderjet');
+const chaincodeName = envOrDefault('CHAINCODE_NAME', 'basic');
+const mspId = envOrDefault('MSP_ID', 'Org1MSP');
+// Path to crypto materials.
+const cryptoPath = envOrDefault('CRYPTO_PATH', path.resolve(__dirname, '..', '..', '..', '..', 'fabric-network','test-network', 'organizations', 'peerOrganizations', 'org1.example.com'));
+// Path to user private key directory.
+const keyDirectoryPath = envOrDefault('KEY_DIRECTORY_PATH', path.resolve(cryptoPath, 'users', 'User1@org1.example.com', 'msp', 'keystore'));
+// Path to user certificate.
+const certPath = envOrDefault('CERT_PATH', path.resolve(cryptoPath, 'users', 'User1@org1.example.com', 'msp', 'signcerts', 'cert.pem'));
+// Path to peer tls certificate.
+const tlsCertPath = envOrDefault('TLS_CERT_PATH', path.resolve(cryptoPath, 'peers', 'peer0.org1.example.com', 'tls', 'ca.crt'));
+// Gateway peer endpoint.
+const peerEndpoint = envOrDefault('PEER_ENDPOINT', 'localhost:7051');
+// Gateway peer SSL host name override.
+const peerHostAlias = envOrDefault('PEER_HOST_ALIAS', 'peer0.org1.example.com');
+const utf8Decoder = new util_1.TextDecoder();
+const assetId = `asset${Date.now()}`;
+let client; 
+let gateway;
 
-exports.list_all_announcements = function (req, res) {
-    Announcements.find({}, function (err, announcement) {
-        if (err)
-            res.send(err);
-        res.json(announcement);
+
+
+//Initialization of Network connections
+async function initializeGRpcConnection() {
+
+    // The gRPC client connection should be shared by all Gateway connections to this endpoint.
+    client = await newGrpcConnection();
+    gateway = (0, fabric_gateway_1.connect)({
+        client,
+        identity: await newIdentity(),
+        signer: await newSigner(),
+        // Default timeouts for different gRPC calls
+        evaluateOptions: () => {
+            return { deadline: Date.now() + 5000 }; // 5 seconds
+        },
+        endorseOptions: () => {
+            return { deadline: Date.now() + 15000 }; // 15 seconds
+        },
+        submitOptions: () => {
+            return { deadline: Date.now() + 5000 }; // 5 seconds
+        },
+        commitStatusOptions: () => {
+            return { deadline: Date.now() + 60000 }; // 1 minute
+        },
     });
+}
+
+
+async function newGrpcConnection() {
+    const tlsRootCert = await fs_1.promises.readFile(tlsCertPath);
+    const tlsCredentials = grpc.credentials.createSsl(tlsRootCert);
+    return new grpc.Client(peerEndpoint, tlsCredentials, {
+        'grpc.ssl_target_name_override': peerHostAlias,
+    });
+}
+
+async function newIdentity() {
+    const credentials = await fs_1.promises.readFile(certPath);
+    return { mspId, credentials };
+}
+
+async function newSigner() {
+    const files = await fs_1.promises.readdir(keyDirectoryPath);
+    const keyPath = path.resolve(keyDirectoryPath, files[0]);
+    const privateKeyPem = await fs_1.promises.readFile(keyPath);
+    const privateKey = crypto.createPrivateKey(privateKeyPem);
+    return fabric_gateway_1.signers.newPrivateKeySigner(privateKey);
+}
+
+
+/**
+ * Evaluate a transaction to query ledger state.
+ */
+
+
+ exports.getAllCommodities = async function (req, res) {
+    await initializeGRpcConnection();
+    try {
+        
+        // Get a network instance representing the channel where the smart contract is deployed.
+        console.log(gateway);
+
+        const network = gateway.getNetwork(channelName);
+        // Get the smart contract from the network.
+        const contract = network.getContract(chaincodeName);
+
+        console.log('\n--> Evaluate Transaction: GetAllCommodities, function returns all the current commodities on the ledger');
+        const resultBytes = await contract.evaluateTransaction('GetAllCommodities');
+        const resultJson = utf8Decoder.decode(resultBytes);
+        const result = JSON.parse(resultJson);
+        console.log('*** Result:', result);
+        res.json(result)
+    }
+    catch(error){
+
+        console.log(error)
+        res.send(error);
+    }
+    finally {
+        gateway.close();
+        client.close();
+    }
 };
 
-exports.create_an_announcement = function (req, res) {
-    let new_announcement = new Announcements(req.body);
-    new_announcement.save(function (err, announcement) {
-        if (err)
-            res.send({success:false, message:"An error occured please contact admin", error:err});
-        res.json({success:true, message:"Announcement posted successfully."});
-    });
-};
 
-exports.read_an_announcement = function (req, res) {
-    Announcements.findById(req.params.announcementId, function (err, announcement) {
-        if (err)
-            res.send(err);
-        res.json(announcement);
+/**
+ * Submit a transaction synchronously, blocking until it has been committed to the ledger.
+ */
+async function createAsset(contract) {
+    console.log('\n--> Submit Transaction: CreateAsset, creates new asset with ID, Color, Size, Owner and AppraisedValue arguments');
+    await contract.submitTransaction('CreateAsset', assetId, 'yellow', '5', 'Tom', '1300');
+    console.log('*** Transaction committed successfully');
+}
+/**
+ * Submit transaction asynchronously, allowing the application to process the smart contract response (e.g. update a UI)
+ * while waiting for the commit notification.
+ */
+async function transferAssetAsync(contract) {
+    console.log('\n--> Async Submit Transaction: TransferAsset, updates existing asset owner');
+    const commit = await contract.submitAsync('TransferAsset', {
+        arguments: [assetId, 'Saptha'],
     });
-};
+    const oldOwner = utf8Decoder.decode(commit.getResult());
+    console.log(`*** Successfully submitted transaction to transfer ownership from ${oldOwner} to Saptha`);
+    console.log('*** Waiting for transaction commit');
+    const status = await commit.getStatus();
+    if (!status.successful) {
+        throw new Error(`Transaction ${status.transactionId} failed to commit with status code ${status.code}`);
+    }
+    console.log('*** Transaction committed successfully');
+}
 
-exports.update_an_announcement = function (req, res) {
-    Announcements.findOneAndUpdate({ _id: req.params.announcementId }, req.body, { new: true }, function (err, announcement) {
-        if (err)
-            res.send(err);
-        res.json(announcement);
-    });
-};
+async function readAssetByID(contract) {
+    console.log('\n--> Evaluate Transaction: ReadAsset, function returns asset attributes');
+    const resultBytes = await contract.evaluateTransaction('ReadAsset', assetId);
+    const resultJson = utf8Decoder.decode(resultBytes);
+    const result = JSON.parse(resultJson);
+    console.log('*** Result:', result);
+}
 
-exports.delete_an_announcement = function (req, res) {
-    Announcements.remove({
-        _id: req.params.announcementId
-    }, function (err, announcement) {
-        if (err)
-            res.send(err);
-        res.json({ message: 'Announcements successfully deleted' });
-    });
-};
+/**
+ * submitTransaction() will throw an error containing details of any error responses from the smart contract.
+ */
+async function updateNonExistentAsset(contract) {
+    console.log('\n--> Submit Transaction: UpdateAsset asset70, asset70 does not exist and should return an error');
+    try {
+        await contract.submitTransaction('UpdateAsset', 'asset70', 'blue', '5', 'Tomoko', '300');
+        console.log('******** FAILED to return an error');
+    }
+    catch (error) {
+        console.log('*** Successfully caught the error: \n', error);
+    }
+}
+
+/**
+ * envOrDefault() will return the value of an environment variable, or a default value if the variable is undefined.
+ */
+function envOrDefault(key, defaultValue) {
+    return process.env[key] || defaultValue;
+}
