@@ -79,7 +79,7 @@ async function newSigner() {
  * Returns all the current commodities on the ledger
  */
 
- exports.getAllCommodities = async function (req, res) {
+exports.getAllCommodities = async function (req, res) {
     await initializeGRpcConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Commodities');
@@ -112,7 +112,7 @@ async function newSigner() {
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
 
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: CreateAsset');
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: CreateAsset ---> '+JSON.parse(req));
 
         const resultBytes = await contract.submitTransaction('CreateCommodity', req.description, req.value, req.owner);
         const resultJson = utf8Decoder.decode(resultBytes);
@@ -132,15 +132,15 @@ async function newSigner() {
 /**
  * Submit a transaction synchronously, blocking until it has been committed to the ledger.
  */
- exports.createCommodity = async function (req, res) {
+ exports.transferCommodity = async function (req, res) {
     await initializeGRpcConnection();
     try {
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
 
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: CreateAsset');
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: TransferCommodity ---> '+JSON.parse(req));
 
-        const resultBytes = await contract.submitTransaction('CreateCommodity', req.description, req.value, req.owner);
+        const resultBytes = await contract.submitTransaction('TransferCommodity', req.commodityId, req.newOwner);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)
