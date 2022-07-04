@@ -48,18 +48,16 @@ let gateway;
 };
 
 /**
- * Returns all the current commodities on the ledger
+ * Returns all the current loans on the ledger
  */
-exports.getAllCommodities = async function (req, res) {
+exports.getAllLoans = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Commodities');
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Loans');
 
-        // Get a network instance representing the channel where the smart contract is deployed.
         const network = gateway.getNetwork(channelName);
-        // Get the smart contract from the network.
-        const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.evaluateTransaction('GetAllCommodities');
+        const contract = network.getContract(chaincodeName, 'LoanRequest');
+        const resultBytes = await contract.evaluateTransaction('GetAllLoans');
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)
@@ -100,15 +98,15 @@ exports.getAllCommodities = async function (req, res) {
 };
 
 /**
- * Read Commodity
+ * Read Loan
  */
-exports.readCommodity = async function (req, res) {
+exports.readLoan = async function (req, res) {
     await initializeGRpcConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Read Commodity'+ req.params.commodityId);
         const network = gateway.getNetwork(channelName);
-        const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.evaluateTransaction('ReadCommodity', req.params.commodityId);
+        const contract = network.getContract(chaincodeName, 'LoanRequest');
+        const resultBytes = await contract.evaluateTransaction('ReadLoan', req.params.loanId);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)
@@ -124,15 +122,15 @@ exports.readCommodity = async function (req, res) {
 };
 
 /**
- * Update a commodity with new description || value
+ * Gets loans to be customer loans
  */
- exports.updateCommodity = async function (req, res) {
+ exports.getCustomerLoans = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: UpdateCommodity'+ JSON.parse(req.commodityId));
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Loan Balance for '+ req.params.customerId);
         const network = gateway.getNetwork(channelName);
-        const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.submitTransaction('UpdateCommodity', req.params.commodityId, req.description, req.value);
+        const contract = network.getContract(chaincodeName, 'LoanRequest');
+        const resultBytes = await contract.evaluateTransaction('GetLoansPerCustomer', req.params.customerId);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)
@@ -148,15 +146,15 @@ exports.readCommodity = async function (req, res) {
 };
 
 /**
- * Get user commodity balance
+ * Gets loans to be authorised by user commodity balance
  */
- exports.commodityBalanceOf = async function (req, res) {
+ exports.getAuthoriserLoans = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: CommodityBalanceOf'+ JSON.parse(req.owner));
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: CommodityBalanceOf'+ req.params.authoriserId);
         const network = gateway.getNetwork(channelName);
-        const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.evaluateTransaction('CommodityBalanceOf', req.owner);
+        const contract = network.getContract(chaincodeName, 'LoanRequest');
+        const resultBytes = await contract.evaluateTransaction('GetAuthoriserLoans', req.params.authoriserid);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)
@@ -171,24 +169,6 @@ exports.readCommodity = async function (req, res) {
     }
 };
 
-/**
- * Submit transaction asynchronously, allowing the application to process the smart contract response (e.g. update a UI)
- * while waiting for the commit notification.
- */
-// async function transferCommodityAsync(contract) {
-//     console.log('\n--> Async Submit Transaction: TransferAsset, updates existing asset owner');
-//     const commit = await contract.submitAsync('TransferAsset', {
-//         arguments: [assetId, 'Saptha'],
-//     });
-//     const oldOwner = utf8Decoder.decode(commit.getResult());
-//     console.log(`*** Successfully submitted transaction to transfer ownership from ${oldOwner} to Saptha`);
-//     console.log('*** Waiting for transaction commit');
-//     const status = await commit.getStatus();
-//     if (!status.successful) {
-//         throw new Error(`Transaction ${status.transactionId} failed to commit with status code ${status.code}`);
-//     }
-//     console.log('*** Transaction committed successfully');
-// }
 
 //Initialization of Network connections
 async function initializeGRpcConnection() {
