@@ -5,21 +5,18 @@ module.exports = function (app) {
     // var loans = require('../controllers/loansController');
     const auth = require("../middleware/auth");
 
-    //Announcement Routes
-    app.route('/funderjet/api/commodities')
-        .get( commodities.getAllCommodities)
-        // .post(commodities.create_a_commodity);
-
-    // app.route('/funderjet/api/commodities/:commodityId')
-    //     .get( commodities.read_a_commodity)
-    //     .put( commodities.update_a_commodity)
-    //     .delete( commodities.delete_a_commodity);
+    //Commodities Routes
+    app.route('/funderjet/api/commodity')
+        .post(commodities.createCommodity)
+        .get( commodities.getAllCommodities);
     
-    // Loans Routes
-    // app.route('/funderjet/api/loans')
-    //     .get( loans.listLoans)
-    //     .post( loans.addLoan);
+    app.route('/funderjet/api/commodity/transfer')
+        .post( commodities.transferCommodity)
 
-    // app.route('/funderjet/api/loans/:loanId')
-    //     .delete( loans.deleteLoan)
+    app.route('/funderjet/api/commodity/:commodityId')
+        .get( commodities.readCommodity)
+        .put( commodities.updateCommodity)
+    
+    app.route('/funderjet/api/commodity/balance')
+        .post( commodities.commodityBalanceOf)
 };

@@ -33,11 +33,12 @@ let gateway;
  exports.createCommodity = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: CreateAsset ---> '+JSON.parse(req));
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: CreateAsset');
+        console.log(req.body);
 
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.submitTransaction('CreateCommodity', req.description, req.value, req.owner);
+        const resultBytes = await contract.submitTransaction('CreateCommodity', req.body.description, req.body.value, req.body.owner);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)
@@ -109,10 +110,10 @@ exports.getAllCommodities = async function (req, res) {
 exports.readCommodity = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Read Commodity'+ JSON.parse(req.commodityId));
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Read Commodity'+ req.params.commodityId);
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.evaluateTransaction('ReadCommodity', req.commodityId);
+        const resultBytes = await contract.evaluateTransaction('ReadCommodity', req.params.commodityId);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)
@@ -136,7 +137,7 @@ exports.readCommodity = async function (req, res) {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: UpdateCommodity'+ JSON.parse(req.commodityId));
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.submitTransaction('UpdateCommodity', req.commodityId, req.description, req.value);
+        const resultBytes = await contract.submitTransaction('UpdateCommodity', req.params.commodityId, req.description, req.value);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)

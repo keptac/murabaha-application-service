@@ -15,10 +15,6 @@
         {
             "name": "Commodities",
             "description": "API for commodities in the network"
-        },
-        {
-            "name": "Loans",
-            "description": "API for commodities in the network"
         }
     ],
     "schemes": ["http"],
@@ -26,7 +22,7 @@
     "produces": ["application/json"],
     
     "paths": {
-        "/funderjet/api/commodities": {
+        "/funderjet/api/commodity": {
             "get": {
               "tags": ["Commodities"],
               "summary": "Get all commodities in the system",
@@ -40,9 +36,7 @@
                   
                 }
               }
-            }
-         },
-         "/addUser": {
+            },
             "post": {
               "tags": ["Commodities"],
               "description": "Create new commodity in system",
@@ -66,11 +60,35 @@
                 }
               }
             }
+        },
+        "/funderjet/api/commodity/transfer": {
+            "post": {
+              "tags": ["Commodities"],
+              "description": "Transfer commodity ownership",
+              "parameters": [
+                {
+                  "name": "commodity",
+                  "in": "body",
+                  "schema": {
+                    "$ref": "#/definitions/Commodities"
+                  }
+                }
+              ],
+              "produces": ["application/json"],
+              "responses": {
+                "200": {
+                  "description": "Commodity upload success",
+                  "schema": {
+                    "$ref": "#/definitions/Commodity"
+                  }
+                }
+              }
+            }
           }
     },
     "definitions": {
           "Commodity": {
-            "required": ["Description", "Owner", "Value"],
+            "required": ["D escription", "Owner", "Value"],
             "properties": {
               "CommodityId": {
                 "type": "string",
