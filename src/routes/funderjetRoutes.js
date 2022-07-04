@@ -21,12 +21,12 @@ module.exports = function (app) {
         .post( commodities.commodityBalanceOf)
 
             //Loan Request Routes
-    app.route('/funderjet/api/loans')
+    app.route('/funderjet/api/loan')
         .post(loans.requestShariaLoan)
         .get( commodities.getAllCommodities);
 
-    app.route('/funderjet/api/commodity/transfer')
-        .post( commodities.transferCommodity)
+    app.route('/funderjet/api/loan/authorise')
+        .post( loans.authoriseLoanRequest)
 
     app.route('/funderjet/api/commodity/:commodityId')
         .get( commodities.readCommodity)

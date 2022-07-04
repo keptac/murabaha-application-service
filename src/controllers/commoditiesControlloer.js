@@ -89,7 +89,7 @@ exports.getAllCommodities = async function (req, res) {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Transfer Commodity ---> '+JSON.parse(req));
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.submitTransaction('TransferCommodity', req.commodityId, req.newOwner);
+        const resultBytes = await contract.submitTransaction('TransferCommodity', req.body.commodityId, req.body.newOwner);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)
@@ -134,10 +134,10 @@ exports.readCommodity = async function (req, res) {
  exports.updateCommodity = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: UpdateCommodity'+ JSON.parse(req.commodityId));
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: UpdateCommodity'+ req.body.commodityId);
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.submitTransaction('UpdateCommodity', req.params.commodityId, req.description, req.value);
+        const resultBytes = await contract.submitTransaction('UpdateCommodity', req.params.commodityId, req.body.description, req.body.value);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)
@@ -158,10 +158,10 @@ exports.readCommodity = async function (req, res) {
  exports.commodityBalanceOf = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: CommodityBalanceOf'+ JSON.parse(req.owner));
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: CommodityBalanceOf'+ req.body.owner);
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.evaluateTransaction('CommodityBalanceOf', req.owner);
+        const resultBytes = await contract.evaluateTransaction('CommodityBalanceOf', req.body.owner);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)

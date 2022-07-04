@@ -75,15 +75,16 @@ exports.getAllCommodities = async function (req, res) {
 };
 
 /**
- * Transfer Commodity transaction synchronously
+ * Authorise a loan requested
  */
- exports.transferCommodity = async function (req, res) {
+ exports.authoriseLoanRequest = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Transfer Commodity ---> '+JSON.parse(req));
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Authorise Loan ---> ');
+        console.log(req.body);
         const network = gateway.getNetwork(channelName);
-        const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.submitTransaction('TransferCommodity', req.commodityId, req.newOwner);
+        const contract = network.getContract(chaincodeName, 'LoanRequest');
+        const resultBytes = await contract.submitTransaction('AuthoriseLoanRequest', req.body.loanId, req.body.decision, req.body.installmentPeriod, req.body.profitMargin);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)
