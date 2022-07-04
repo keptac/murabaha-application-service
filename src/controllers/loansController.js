@@ -146,7 +146,7 @@ exports.readLoan = async function (req, res) {
 };
 
 /**
- * Gets loans to be authorised by user commodity balance
+ * Gets loans to be authorised by user
  */
  exports.getAuthoriserLoans = async function (req, res) {
     await initializeGRpcConnection();
