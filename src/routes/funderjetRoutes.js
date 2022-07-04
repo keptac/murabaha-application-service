@@ -2,7 +2,7 @@
 
 module.exports = function (app) {
     var commodities = require('../controllers/commoditiesControlloer');
-    // var loans = require('../controllers/loansController');
+    var loans = require('../controllers/loansController');
     const auth = require("../middleware/auth");
 
     //Commodities Routes
@@ -17,6 +17,21 @@ module.exports = function (app) {
         .get( commodities.readCommodity)
         .put( commodities.updateCommodity)
     
+    app.route('/funderjet/api/commodity/balance')
+        .post( commodities.commodityBalanceOf)
+
+            //Loan Request Routes
+    app.route('/funderjet/api/loans')
+        .post(loans.requestShariaLoan)
+        .get( commodities.getAllCommodities);
+
+    app.route('/funderjet/api/commodity/transfer')
+        .post( commodities.transferCommodity)
+
+    app.route('/funderjet/api/commodity/:commodityId')
+        .get( commodities.readCommodity)
+        .put( commodities.updateCommodity)
+
     app.route('/funderjet/api/commodity/balance')
         .post( commodities.commodityBalanceOf)
 };
