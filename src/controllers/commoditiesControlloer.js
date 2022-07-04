@@ -158,7 +158,7 @@ exports.readCommodity = async function (req, res) {
  exports.commodityBalanceOf = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: CommodityBalanceOf'+ req.body.owner);
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Commodity Balance Of '+ req.body.owner);
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
         const resultBytes = await contract.evaluateTransaction('CommodityBalanceOf', req.body.owner);
