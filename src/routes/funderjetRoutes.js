@@ -42,7 +42,4 @@ module.exports = function (app) {
     app.route('/funderjet/api/token/balance/:owner')
         .get(token.balanceOf)
 
-    app.route('/funderjet/api/token/balance/:owner')
-        .get(token.balanceOf)
-
 };
