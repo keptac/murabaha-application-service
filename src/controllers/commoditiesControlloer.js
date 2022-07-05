@@ -38,7 +38,7 @@ let gateway;
 
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.submitTransaction('CreateCommodity', req.body.description, req.body.value, req.body.owner);
+        const resultBytes = await contract.submitTransaction('CreateCommodity', req.body.description, req.body.value, req.body.owner, req.body.ownerId);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)
@@ -89,7 +89,7 @@ exports.getAllCommodities = async function (req, res) {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Transfer Commodity ---> '+JSON.parse(req));
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.submitTransaction('TransferCommodity', req.body.commodityId, req.body.newOwner);
+        const resultBytes = await contract.submitTransaction('TransferCommodity', req.body.commodityId, req.body.newOwner, req.body.newOwnerId);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)
@@ -158,10 +158,10 @@ exports.readCommodity = async function (req, res) {
  exports.commodityBalanceOf = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Commodity Balance Of '+ req.body.owner);
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Commodity Balance Of '+ req.params.owner);
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.evaluateTransaction('CommodityBalanceOf', req.body.owner);
+        const resultBytes = await contract.evaluateTransaction('CommodityBalanceOf', req.params.owner);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)

@@ -18,8 +18,8 @@ module.exports = function (app) {
         .get(commodities.readCommodity)
         .put(commodities.updateCommodity)
     
-    app.route('/funderjet/api/commodity/balance')
-        .post(commodities.commodityBalanceOf)
+    app.route('/funderjet/api/commodity/balance/:owner')
+        .get(commodities.commodityBalanceOf)
 
     //Loan Request Routes
     app.route('/funderjet/api/loan')
