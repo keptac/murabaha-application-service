@@ -86,7 +86,8 @@ exports.getAllCommodities = async function (req, res) {
  exports.transferCommodity = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Transfer Commodity ---> '+JSON.parse(req));
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Transfer Commodity ---> ');
+        console.log(req.body);
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
         const resultBytes = await contract.submitTransaction('TransferCommodity', req.body.commodityId, req.body.newOwner, req.body.newOwnerId);
@@ -110,7 +111,7 @@ exports.getAllCommodities = async function (req, res) {
 exports.readCommodity = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Read Commodity'+ req.params.commodityId);
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Read Commodity '+ req.params.commodityId);
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
         const resultBytes = await contract.evaluateTransaction('ReadCommodity', req.params.commodityId);
