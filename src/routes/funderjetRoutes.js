@@ -17,6 +17,9 @@ module.exports = function (app) {
     app.route('/funderjet/api/commodity/:commodityId')
         .get(commodities.readCommodity)
         .put(commodities.updateCommodity)
+
+    app.route('/funderjet/api/commodity/history/:commodityId')
+        .get(commodities.commodityHistory)
     
     app.route('/funderjet/api/commodity/balance/:owner')
         .get(commodities.commodityBalanceOf)

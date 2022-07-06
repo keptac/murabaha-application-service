@@ -124,7 +124,7 @@ exports.readLoan = async function (req, res) {
 /**
  * Gets loans to be customer loans
  */
- exports.getCustomerLoans = async function (req, res) {
+exports.getCustomerLoans = async function (req, res) {
     await initializeGRpcConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Loan Balance for '+ req.params.customerId);
@@ -148,7 +148,7 @@ exports.readLoan = async function (req, res) {
 /**
  * Gets loans to be authorised by user
  */
- exports.getAuthoriserLoans = async function (req, res) {
+exports.getAuthoriserLoans = async function (req, res) {
     await initializeGRpcConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: CommodityBalanceOf'+ req.params.authoriserId);
@@ -168,7 +168,6 @@ exports.readLoan = async function (req, res) {
         client.close();
     }
 };
-
 
 //Initialization of Network connections
 async function initializeGRpcConnection() {
