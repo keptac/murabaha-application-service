@@ -27,10 +27,10 @@ let gateway;
  exports.balanceOf = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: BalanceOf'+ req.params.owner);
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Token Balance Of '+ req.params.owner);
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName, 'FTJERC20');
-        const resultBytes = await contract.evaluateTransaction('BalanceOf', req.params.onwer);
+        const resultBytes = await contract.evaluateTransaction('BalanceOf', req.params.owner);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)

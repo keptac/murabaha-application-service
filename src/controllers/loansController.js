@@ -27,7 +27,7 @@ let gateway;
  exports.requestShariaLoan = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: CreateAsset');
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Request Loan');
         console.log(req.body);
 
         const network = gateway.getNetwork(channelName);

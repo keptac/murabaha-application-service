@@ -35,7 +35,7 @@ module.exports = function (app) {
     app.route('/funderjet/api/loan/authorise')
         .post(loans.authoriseLoanRequest)
 
-    app.route('/funderjet/api/commodity/:loanId')
+    app.route('/funderjet/api/loan/:loanId')
         .get(loans.readLoan)
 
     //Token endpoints
