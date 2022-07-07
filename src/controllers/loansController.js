@@ -169,6 +169,30 @@ exports.getAuthoriserLoans = async function (req, res) {
     }
 };
 
+/**
+ * Read Loan
+ */
+ exports.loanHistory = async function (req, res) {
+    await initializeGRpcConnection();
+    try {
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Loan Hostory '+ req.params.loanId);
+        const network = gateway.getNetwork(channelName);
+        const contract = network.getContract(chaincodeName);
+        const resultBytes = await contract.evaluateTransaction('GetLoanHistory', req.params.loanId);
+        const resultJson = utf8Decoder.decode(resultBytes);
+        const result = JSON.parse(resultJson);
+        res.json(result)
+    }
+    catch(error){
+        console.log(error)
+        res.send(error);
+    }
+    finally {
+        gateway.close();
+        client.close();
+    }
+};
+
 //Initialization of Network connections
 async function initializeGRpcConnection() {
     // The gRPC client connection should be shared by all Gateway connections to this endpoint.

@@ -41,6 +41,9 @@ module.exports = function (app) {
     app.route('/funderjet/api/loan/:loanId')
         .get(loans.readLoan)
 
+    app.route('/funderjet/api/loan/history/:loanId')
+        .get(loans.loanHistory)
+
     //Token endpoints
     app.route('/funderjet/api/token/balance/:owner')
         .get(token.balanceOf)
