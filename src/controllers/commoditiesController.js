@@ -185,7 +185,7 @@ exports.updateCommodity = async function (req, res) {
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Commodity Hostory '+ req.params.commodityId);
         const network = gateway.getNetwork(channelName);
-        const contract = network.getContract(chaincodeName);
+        const contract = network.getContract(chaincodeName,'CommodityTrasfer');
         const resultBytes = await contract.evaluateTransaction('GetCommodityHistory', req.params.commodityId);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);

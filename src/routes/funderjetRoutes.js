@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function (app) {
-    var commodities = require('../controllers/commoditiesControlloer');
+    var commodities = require('../controllers/commoditiesController');
     var loans = require('../controllers/loansController');
     var token = require('../controllers/tokenController');
     // const auth = require("../middleware/auth");
