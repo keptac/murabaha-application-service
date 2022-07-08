@@ -85,7 +85,8 @@ exports.getAllLoans = async function (req, res) {
         const resultBytes = await contract.submitTransaction('AuthoriseLoanRequest', req.body.loanId, req.body.decision, req.body.installmentPeriod, req.body.profitMargin);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
-        res.json(result)
+
+        return res.json(result)
     }
     catch(error){
         console.log(error)

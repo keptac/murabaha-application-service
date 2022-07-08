@@ -45,6 +45,30 @@ let gateway;
     }
 };
 
+/**
+ * Get account statement
+ */
+ exports.accountStatement = async function (req, res) {
+    await initializeGRpcConnection();
+    try {
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Account Historu  '+ req.params.owner);
+        const network = gateway.getNetwork(channelName);
+        const contract = network.getContract(chaincodeName, 'FTJERC20');
+        const resultBytes = await contract.evaluateTransaction('GetAccountStatement', req.params.owner);
+        const resultJson = utf8Decoder.decode(resultBytes);
+        const result = JSON.parse(resultJson);
+        res.json(result)
+    }
+    catch(error){
+        console.log(error)
+        res.send(error);
+    }
+    finally {
+        gateway.close();
+        client.close();
+    }
+};
+
 
 //Initialization of Network connections
 async function initializeGRpcConnection() {
