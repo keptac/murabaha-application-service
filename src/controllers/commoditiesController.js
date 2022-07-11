@@ -1,29 +1,12 @@
 'use strict';
 
-const grpc = require("@grpc/grpc-js");
-const fabric_gateway = require("@hyperledger/fabric-gateway");
-const crypto = require("crypto");
-const fs = require("fs");
-const path = require("path");
 const util = require("util");
 const moment = require("moment");
-
-const channelName = envOrDefault('CHANNEL_NAME', 'funderjet');
-const chaincodeName = envOrDefault('CHAINCODE_NAME', 'basic');
-const mspId = envOrDefault('MSP_ID', 'Org1MSP');
-// Path to crypto materials.
-const cryptoPath = envOrDefault('CRYPTO_PATH', path.resolve(__dirname, '..', '..', '..', '..', 'fabric-network','test-network', 'organizations', 'peerOrganizations', 'org1.example.com'));
-// Path to user private key directory.
-const keyDirectoryPath = envOrDefault('KEY_DIRECTORY_PATH', path.resolve(cryptoPath, 'users', 'User1@org1.example.com', 'msp', 'keystore'));
-// Path to user certificate.
-const certPath = envOrDefault('CERT_PATH', path.resolve(cryptoPath, 'users', 'User1@org1.example.com', 'msp', 'signcerts', 'cert.pem'));
-// Path to peer tls certificate.
-const tlsCertPath = envOrDefault('TLS_CERT_PATH', path.resolve(cryptoPath, 'peers', 'peer0.org1.example.com', 'tls', 'ca.crt'));
-// Gateway peer endpoint.
-const peerEndpoint = envOrDefault('PEER_ENDPOINT', 'localhost:7051');
-// Gateway peer SSL host name override.
-const peerHostAlias = envOrDefault('PEER_HOST_ALIAS', 'peer0.org1.example.com');
+const channelName =  'funderjet';
+const chaincodeName =  'basic';
 const utf8Decoder = new util.TextDecoder();
+const { initializeGRpcConnection } = require('../utils/AppUtils.js');
+
 let client; 
 let gateway;
 
@@ -31,7 +14,7 @@ let gateway;
  * Submit Create Commodity transaction synchronously, blocking until it has been committed to the ledger.
  */
 exports.createCommodity = async function (req, res) {
-    await initializeGRpcConnection();
+    await initConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: CreateAsset');
         console.log(req.body);
@@ -57,7 +40,7 @@ exports.createCommodity = async function (req, res) {
  * Returns all the current commodities on the ledger
  */
 exports.getAllCommodities = async function (req, res) {
-    await initializeGRpcConnection();
+    await initConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Commodities');
 
@@ -84,7 +67,7 @@ exports.getAllCommodities = async function (req, res) {
  * Transfer Commodity transaction synchronously
  */
 exports.transferCommodity = async function (req, res) {
-    await initializeGRpcConnection();
+    await initConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Transfer Commodity ---> ');
         console.log(req.body);
@@ -109,7 +92,7 @@ exports.transferCommodity = async function (req, res) {
  * Read Commodity
  */
 exports.readCommodity = async function (req, res) {
-    await initializeGRpcConnection();
+    await initConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Read Commodity '+ req.params.commodityId);
         const network = gateway.getNetwork(channelName);
@@ -133,7 +116,7 @@ exports.readCommodity = async function (req, res) {
  * Update a commodity with new description || value
  */
 exports.updateCommodity = async function (req, res) {
-    await initializeGRpcConnection();
+    await initConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: UpdateCommodity'+ req.body.commodityId);
         const network = gateway.getNetwork(channelName);
@@ -157,7 +140,7 @@ exports.updateCommodity = async function (req, res) {
  * Get user commodity balance
  */
  exports.commodityBalanceOf = async function (req, res) {
-    await initializeGRpcConnection();
+    await initConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Commodity Balance Of '+ req.params.owner);
         const network = gateway.getNetwork(channelName);
@@ -181,7 +164,7 @@ exports.updateCommodity = async function (req, res) {
  * Read Commodity History
  */
  exports.commodityHistory = async function (req, res) {
-    await initializeGRpcConnection();
+    await initConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Commodity Hostory '+ req.params.commodityId);
         const network = gateway.getNetwork(channelName);
@@ -204,7 +187,7 @@ exports.updateCommodity = async function (req, res) {
 
 //SALES
 exports.getAllSales = async function (req, res) {
-    await initializeGRpcConnection();
+    await initConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Sales');
 
@@ -226,7 +209,7 @@ exports.getAllSales = async function (req, res) {
 };
 
 exports.proposeSale = async function (req, res) {
-    await initializeGRpcConnection();
+    await initConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Propose Sale');
         console.log(req.body);
@@ -249,7 +232,7 @@ exports.proposeSale = async function (req, res) {
 };
 
 exports.authoriseSale = async function (req, res) {
-    await initializeGRpcConnection();
+    await initConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Authorise Sale');
         console.log(req.body);
@@ -272,7 +255,7 @@ exports.authoriseSale = async function (req, res) {
 };
 
 exports.getSalesBySeller = async function (req, res) {
-    await initializeGRpcConnection();
+    await initConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Sales per Seller');
 
@@ -294,7 +277,7 @@ exports.getSalesBySeller = async function (req, res) {
 };
 
 exports.getSalesByBuyer = async function (req, res) {
-    await initializeGRpcConnection();
+    await initConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Sales per Buyer Account');
 
@@ -316,7 +299,7 @@ exports.getSalesByBuyer = async function (req, res) {
 };
 
 exports.saleHistory = async function (req, res) {
-    await initializeGRpcConnection();
+    await initConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Sale History '+ req.params.saleId);
         const network = gateway.getNetwork(channelName);
@@ -335,7 +318,6 @@ exports.saleHistory = async function (req, res) {
         client.close();
     }
 };
-
 
 /**
  * Submit transaction asynchronously, allowing the application to process the smart contract response (e.g. update a UI)
@@ -357,53 +339,15 @@ exports.saleHistory = async function (req, res) {
 // }
 
 //Initialization of Network connections
-async function initializeGRpcConnection() {
-    // The gRPC client connection should be shared by all Gateway connections to this endpoint.
-    client = await newGrpcConnection();
-    gateway = (0, fabric_gateway.connect)({
-        client,
-        identity: await newIdentity(),
-        signer: await newSigner(),
-        // Default timeouts for different gRPC calls
-        evaluateOptions: () => {
-            return { deadline: Date.now() + 5000 }; // 5 seconds
-        },
-        endorseOptions: () => {
-            return { deadline: Date.now() + 15000 }; // 15 seconds
-        },
-        submitOptions: () => {
-            return { deadline: Date.now() + 5000 }; // 5 seconds
-        },
-        commitStatusOptions: () => {
-            return { deadline: Date.now() + 60000 }; // 1 minute
-        },
-    });
+
+
+async function initConnection() {
+    const connection = await initializeGRpcConnection();
+    client = connection.client;
+    gateway = connection.gateway;
 }
 
-async function newGrpcConnection() {
-    const tlsRootCert = await fs.promises.readFile(tlsCertPath);
-    const tlsCredentials = grpc.credentials.createSsl(tlsRootCert);
-    return new grpc.Client(peerEndpoint, tlsCredentials, {
-        'grpc.ssl_target_name_override': peerHostAlias,
-    });
-}
 
-async function newIdentity() {
-    const credentials = await fs.promises.readFile(certPath);
-    return { mspId, credentials };
-}
 
-async function newSigner() {
-    const files = await fs.promises.readdir(keyDirectoryPath);
-    const keyPath = path.resolve(keyDirectoryPath, files[0]);
-    const privateKeyPem = await fs.promises.readFile(keyPath);
-    const privateKey = crypto.createPrivateKey(privateKeyPem);
-    return fabric_gateway.signers.newPrivateKeySigner(privateKey);
-}
 
-/**
- * envOrDefault() will return the value of an environment variable, or a default value if the variable is undefined.
- */
-function envOrDefault(key, defaultValue) {
-    return process.env[key] || defaultValue;
-}
+
