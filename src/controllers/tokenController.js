@@ -51,7 +51,7 @@ let gateway;
  exports.accountStatement = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Account Historu  '+ req.params.owner);
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Account History  '+ req.params.owner);
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName, 'FTJERC20');
         const resultBytes = await contract.evaluateTransaction('GetAccountStatement', req.params.owner);

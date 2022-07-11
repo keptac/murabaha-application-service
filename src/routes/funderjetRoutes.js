@@ -63,7 +63,7 @@ module.exports = function (app) {
 
     //Token endpoints
     app.route('/funderjet/api/token/balance/:owner')
-        .get(token.accountStatement)
+        .get(token.balanceOf)
 
     app.route('/funderjet/api/token/statement/:owner')
         .get(token.accountStatement)

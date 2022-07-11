@@ -185,7 +185,7 @@ exports.updateCommodity = async function (req, res) {
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Commodity Hostory '+ req.params.commodityId);
         const network = gateway.getNetwork(channelName);
-        const contract = network.getContract(chaincodeName,'CommodityTrasfer');
+        const contract = network.getContract(chaincodeName,'CommodityTransfer');
         const resultBytes = await contract.evaluateTransaction('GetCommodityHistory', req.params.commodityId);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
@@ -209,7 +209,7 @@ exports.getAllSales = async function (req, res) {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Sales');
 
         const network = gateway.getNetwork(channelName);
-        const contract = network.getContract(chaincodeName);
+        const contract = network.getContract(chaincodeName, 'CommodityTransfer');
         const resultBytes = await contract.evaluateTransaction('GetAllSales');
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
@@ -320,7 +320,7 @@ exports.saleHistory = async function (req, res) {
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Sale History '+ req.params.saleId);
         const network = gateway.getNetwork(channelName);
-        const contract = network.getContract(chaincodeName,'CommodityTrasfer');
+        const contract = network.getContract(chaincodeName,'CommodityTransfer');
         const resultBytes = await contract.evaluateTransaction('GetSaleHistory', req.params.saleId);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
