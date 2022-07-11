@@ -24,6 +24,19 @@ module.exports = function (app) {
     app.route('/funderjet/api/commodity/balance/:owner')
         .get(commodities.commodityBalanceOf)
 
+    app.route('/funderjet/api/commodity/sale')
+        .post(commodities.proposeSale)
+        .get(commodities.getAllSales)
+
+    app.route('/funderjet/api/commodity/authorise-sale')
+        .post(commodities.authoriseSale)
+
+    app.route('/funderjet/api/commodity/sale/:userAccountId')
+        .get(commodities.getSalesByUser)
+    
+    app.route('/funderjet/api/commodity/sale-history/:saleId')
+        .get(commodities.saleHistory)
+
     //Loan Request Routes
     app.route('/funderjet/api/loan')
         .post(loans.requestShariaLoan)

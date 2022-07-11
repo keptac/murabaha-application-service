@@ -178,7 +178,7 @@ exports.updateCommodity = async function (req, res) {
 };
 
 /**
- * Read Commodity
+ * Read Commodity History
  */
  exports.commodityHistory = async function (req, res) {
     await initializeGRpcConnection();
@@ -200,6 +200,122 @@ exports.updateCommodity = async function (req, res) {
         client.close();
     }
 };
+
+
+//SALES
+exports.getAllSales = async function (req, res) {
+    await initializeGRpcConnection();
+    try {
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Sales');
+
+        // Get a network instance representing the channel where the smart contract is deployed.
+        const network = gateway.getNetwork(channelName);
+        // Get the smart contract from the network.
+        const contract = network.getContract(chaincodeName);
+        const resultBytes = await contract.evaluateTransaction('GetAllSales');
+        const resultJson = utf8Decoder.decode(resultBytes);
+        const result = JSON.parse(resultJson);
+        res.json(result)
+    }
+    catch(error){
+        console.log(error)
+        res.send(error);
+    }
+    finally {
+        gateway.close();
+        client.close();
+    }
+};
+
+exports.proposeSale = async function (req, res) {
+    await initializeGRpcConnection();
+    try {
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: ProposeSale');
+        console.log(req.body);
+
+        const network = gateway.getNetwork(channelName);
+        const contract = network.getContract(chaincodeName);
+        const resultBytes = await contract.submitTransaction('ProposeSale', req.body.commodityId, req.body.buyer, req.body.buyerId);
+        const resultJson = utf8Decoder.decode(resultBytes);
+        const result = JSON.parse(resultJson);
+        res.json(result)
+    }
+    catch(error){
+        console.log(error)
+        res.send(error);
+    }
+    finally {
+        gateway.close();
+        client.close();
+    }
+};
+
+exports.authoriseSale = async function (req, res) {
+    await initializeGRpcConnection();
+    try {
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Authorise Sale');
+        console.log(req.body);
+
+        const network = gateway.getNetwork(channelName);
+        const contract = network.getContract(chaincodeName);
+        const resultBytes = await contract.submitTransaction('AuthoriseSale', req.body.saleId, req.body.decision);
+        const resultJson = utf8Decoder.decode(resultBytes);
+        const result = JSON.parse(resultJson);
+        res.json(result)
+    }
+    catch(error){
+        console.log(error)
+        res.send(error);
+    }
+    finally {
+        gateway.close();
+        client.close();
+    }
+};
+
+exports.getSalesByUser = async function (req, res) {
+    await initializeGRpcConnection();
+    try {
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Sales per User Account');
+
+        const network = gateway.getNetwork(channelName);
+        const contract = network.getContract(chaincodeName);
+        const resultBytes = await contract.evaluateTransaction('GetSalesByUser', req.params.userAccountId);
+        const resultJson = utf8Decoder.decode(resultBytes);
+        const result = JSON.parse(resultJson);
+        res.json(result)
+    }
+    catch(error){
+        console.log(error)
+        res.send(error);
+    }
+    finally {
+        gateway.close();
+        client.close();
+    }
+};
+
+exports.saleHistory = async function (req, res) {
+    await initializeGRpcConnection();
+    try {
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Sale History '+ req.params.saleId);
+        const network = gateway.getNetwork(channelName);
+        const contract = network.getContract(chaincodeName,'CommodityTrasfer');
+        const resultBytes = await contract.evaluateTransaction('GetSaleHistory', req.params.saleId);
+        const resultJson = utf8Decoder.decode(resultBytes);
+        const result = JSON.parse(resultJson);
+        res.json(result)
+    }
+    catch(error){
+        console.log(error)
+        res.send(error);
+    }
+    finally {
+        gateway.close();
+        client.close();
+    }
+};
+
 
 /**
  * Submit transaction asynchronously, allowing the application to process the smart contract response (e.g. update a UI)
