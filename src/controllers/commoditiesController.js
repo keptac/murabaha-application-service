@@ -230,7 +230,7 @@ exports.getAllSales = async function (req, res) {
 exports.proposeSale = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: ProposeSale');
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Propose Sale');
         console.log(req.body);
 
         const network = gateway.getNetwork(channelName);
@@ -273,14 +273,36 @@ exports.authoriseSale = async function (req, res) {
     }
 };
 
-exports.getSalesByUser = async function (req, res) {
+exports.getSalesBySeller = async function (req, res) {
     await initializeGRpcConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Sales per User Account');
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Sales per Seller');
 
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.evaluateTransaction('GetSalesByUser', req.params.userAccountId);
+        const resultBytes = await contract.evaluateTransaction('GetSalesBySeller', req.params.userAccountId);
+        const resultJson = utf8Decoder.decode(resultBytes);
+        const result = JSON.parse(resultJson);
+        res.json(result)
+    }
+    catch(error){
+        console.log(error)
+        res.send(error);
+    }
+    finally {
+        gateway.close();
+        client.close();
+    }
+};
+
+exports.getSalesByBuyer = async function (req, res) {
+    await initializeGRpcConnection();
+    try {
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Sales per Buyer Account');
+
+        const network = gateway.getNetwork(channelName);
+        const contract = network.getContract(chaincodeName);
+        const resultBytes = await contract.evaluateTransaction('GetSalesByBuyer', req.params.userAccountId);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)
