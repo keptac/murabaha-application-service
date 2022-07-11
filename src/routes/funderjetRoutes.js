@@ -25,7 +25,6 @@ module.exports = function (app) {
         .get(commodities.commodityBalanceOf)
 
     //Sales
-
     app.route('/funderjet/api/commodity/sale')
         .post(commodities.proposeSale)
         .get(commodities.getAllSales)

@@ -208,9 +208,7 @@ exports.getAllSales = async function (req, res) {
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Sales');
 
-        // Get a network instance representing the channel where the smart contract is deployed.
         const network = gateway.getNetwork(channelName);
-        // Get the smart contract from the network.
         const contract = network.getContract(chaincodeName);
         const resultBytes = await contract.evaluateTransaction('GetAllSales');
         const resultJson = utf8Decoder.decode(resultBytes);
