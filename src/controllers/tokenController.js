@@ -37,8 +37,8 @@ let gateway;
 /**
  * Get account statement
  */
- exports.accountStatement = async function (req, res) {
-     await initConnection();
+exports.accountStatement = async function (req, res) {
+    await initConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Account History  '+ req.params.owner);
         const network = gateway.getNetwork(channelName);
