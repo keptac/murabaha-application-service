@@ -64,16 +64,23 @@ exports.getAllLoans = async function (req, res) {
 /**
  * Authorise a loan requested
  */
- exports.authoriseLoanRequest = async function (req, res) {
-     await initConnection();
+exports.authoriseLoanRequest = async function (req, res) {
+    await initConnection();
     try {
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Authorise Loan ---> ');
         console.log(req.body);
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName, 'LoanRequest');
+
         const resultBytes = await contract.submitTransaction('AuthoriseLoanRequest', req.body.loanId, req.body.decision, req.body.installmentPeriod, req.body.profitMargin);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
+
+        if(result===true && req.body.decision==='APPROVED'){
+            const resultBytes = await contract.submitTransaction('_trfc_trxn_completion', req.body.loanId);
+            const resultJson = utf8Decoder.decode(resultBytes);
+            result = JSON.parse(resultJson);
+        }
 
         return res.json(result)
     }

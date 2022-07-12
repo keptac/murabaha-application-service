@@ -25,20 +25,20 @@ module.exports = function (app) {
         .get(commodities.commodityBalanceOf)
 
     //Sales
-    app.route('/funderjet/api/commodity/sale')
+    app.route('/funderjet/api/sales')
         .post(commodities.proposeSale)
         .get(commodities.getAllSales)
 
-    app.route('/funderjet/api/commodity/authorise-sale')
+    app.route('/funderjet/api/authorise-sale')
         .post(commodities.authoriseSale)
 
-    app.route('/funderjet/api/commodity/sale-buyer/:userAccountId')
+    app.route('/funderjet/api/sale-buyer/:userAccountId')
         .get(commodities.getSalesByBuyer)
 
-    app.route('/funderjet/api/commodity/sale-seller/:userAccountId')
+    app.route('/funderjet/api/sale-seller/:userAccountId')
         .get(commodities.getSalesBySeller)
     
-    app.route('/funderjet/api/commodity/sale-history/:saleId')
+    app.route('/funderjet/api/sale-history/:saleId')
         .get(commodities.saleHistory)
 
     //Loan Request Routes
