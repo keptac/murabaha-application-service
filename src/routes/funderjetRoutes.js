@@ -68,6 +68,6 @@ module.exports = function (app) {
     app.route('/funderjet/api/token/statement/:owner')
         .get(token.accountStatement)
 
-    app.route('/funderje/api/user')
+    app.route('/funderjet/api/user')
         .post(user.registerUser)
 };
