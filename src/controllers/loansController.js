@@ -74,10 +74,10 @@ exports.authoriseLoanRequest = async function (req, res) {
 
         const resultBytes = await contract.submitTransaction('AuthoriseLoanRequest', req.body.loanId, req.body.decision, req.body.installmentPeriod, req.body.profitMargin);
         const resultJson = utf8Decoder.decode(resultBytes);
-        const result = JSON.parse(resultJson);
+        let result = JSON.parse(resultJson);
 
         if(result===true && req.body.decision==='APPROVED'){
-            const resultBytes = await contract.submitTransaction('_trfc_trxn_completion', req.body.loanId);
+            const resultBytes = await contract.submitTransaction('Trfc_trxn_completion', req.body.loanId);
             const resultJson = utf8Decoder.decode(resultBytes);
             result = JSON.parse(resultJson);
         }
