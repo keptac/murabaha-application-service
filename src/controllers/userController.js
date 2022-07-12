@@ -21,11 +21,10 @@ exports.registerUser = async function (req, res) {
     // Setup the wallet to hold the credentials of the application user
 		const wallet = await buildWallet(Wallets, walletPath);
 
-    await enrollAdmin(caClient, wallet, mspOrg1);
-
 		const response = await registerAndEnrollUser(caClient, wallet, mspOrg1, req.body.userId, 'org1.department1', req.body);
-
-    await db.put(req.body.userId, JSON.stringify(response)); 
+    if(response.success){
+      await db.put(req.body.userId, JSON.stringify(response)); 
+    }
 
     res.json(response);
     }
@@ -45,6 +44,7 @@ exports.fetchUser = async function (req, res) {
         if (err) {  
           return handleError(err);  
         }  
+        console.log(JSON.parse(value))
 
         res.json({
           userExists: response.userExists,

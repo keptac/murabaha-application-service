@@ -59,6 +59,7 @@ exports.registerAndEnrollUser = async (caClient, wallet, orgMspId, userId, affil
 		const userIdentity = await wallet.get(userId);
 		if (userIdentity) {
 			console.log(`An identity for the user ${userId} already exists in the wallet`);
+
 			return {
 				success:false,
 				message: `An identity for the user ${userId} already exists in the wallet`
@@ -68,11 +69,13 @@ exports.registerAndEnrollUser = async (caClient, wallet, orgMspId, userId, affil
 		// Must use an admin to register a new user
 		const adminIdentity = await wallet.get(adminUserId);
 		if (!adminIdentity) {
-			console.log('An identity for the admin user does not exist in the wallet');
-			return {
-				success:false,
-				message: 'An error occured please contact system admin'
-			};
+			console.log('An identity for the admin user does not exist in the wallet... \n\n Creating admin wallet');
+			
+			this.enrollAdmin(caClient, wallet, orgMspId);
+			// return {
+			// 	success:false,
+			// 	message: 'An error occured please contact system admin'
+			// };
 		}
 
 		// build a user object for authenticating with the CA
@@ -99,10 +102,10 @@ exports.registerAndEnrollUser = async (caClient, wallet, orgMspId, userId, affil
 				certificate: enrollment.certificate,
 				privateKey: enrollment.key.toBytes(),
 			},
-			accountAddress: accountAddress,
-			firstName:userProfile.firstname,
-			lastName:userProfile.lastname,
-			role: userProfile.role,
+			// accountAddress: accountAddress,
+			// firstName:userProfile.firstname,
+			// lastName:userProfile.lastname,
+			// role: userProfile.role,
 			mspId: orgMspId,
 			type: 'X.509'
 		};
@@ -114,8 +117,8 @@ exports.registerAndEnrollUser = async (caClient, wallet, orgMspId, userId, affil
 			success: true,
 			userId:userId,
 			accountAddress: accountAddress,
-			firstName:userProfile.firstname,
-			lastName:userProfile.lastname,
+			firstName:userProfile.firstName,
+			lastName:userProfile.lastName,
 			role: userProfile.role
 		};
 
