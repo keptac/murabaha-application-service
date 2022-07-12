@@ -8,7 +8,7 @@ const { buildCCPOrg1, buildWallet } = require('../utils/AppUtils');
 const mspOrg1 = 'Org1MSP';
 const walletPath = path.join(__dirname,'..', 'data','wallet');
 
-var level = require('level');
+var db = require('../middleware/db');
 
 exports.registerUser = async function (req, res) {
     try {
@@ -25,6 +25,8 @@ exports.registerUser = async function (req, res) {
 
 		const response = await registerAndEnrollUser(caClient, wallet, mspOrg1, req.body.userId, 'org1.department1', req.body);
 
+    await db.put(req.body.userId, JSON.stringify(response)); 
+
     res.json(response);
     }
     catch(error){
@@ -35,11 +37,26 @@ exports.registerUser = async function (req, res) {
 
 exports.fetchUser = async function (req, res) {
   try {
-  const wallet = await buildWallet(Wallets, walletPath);
+    const wallet = await buildWallet(Wallets, walletPath);
+    const response = await fetchIdentity(wallet, req.params.userId);
 
-  const response = await fetchIdentity(wallet, req.params.userId);
+    if(response.userExists){
+      db.get(req.params.userId, function(err, value) {    
+        if (err) {  
+          return handleError(err);  
+        }  
 
-  res.json(response);
+        res.json({
+          userExists: response.userExists,
+          message: response.message,
+          user: JSON.parse(value)
+        });
+    
+      });
+     
+    }else{
+      res.json(response)
+    }
   }
   catch(error){
       console.log(error)

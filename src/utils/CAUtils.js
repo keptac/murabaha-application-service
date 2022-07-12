@@ -111,7 +111,6 @@ exports.registerAndEnrollUser = async (caClient, wallet, orgMspId, userId, affil
 
 		const identityResponse = {
 			success: true,
-			certificate:enrollment.certificate,
 			userId:userId,
 			accountAddress: accountAddress,
 			firstname:userProfile.firstname,
