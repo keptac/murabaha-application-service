@@ -50,7 +50,7 @@ exports.enrollAdmin = async (caClient, wallet, orgMspId) => {
 	}
 };
 
-exports.registerAndEnrollUser = async (caClient, wallet, orgMspId, userId, affiliation) => {
+exports.registerAndEnrollUser = async (caClient, wallet, orgMspId, userId, affiliation, userProfile) => {
 	try {
 		// Check to see if we've already enrolled the user
 		const userIdentity = await wallet.get(userId);
@@ -83,13 +83,16 @@ exports.registerAndEnrollUser = async (caClient, wallet, orgMspId, userId, affil
 			enrollmentSecret: secret
 		});
 
-		const accountAddress = "helow";
+		const randomHex = () => `#${Math.floor(Math.random() * 0xffffff).toString(16)}`;
+		const accountAddress = randomHex();
 		const x509Identity = {
 			credentials: {
 				certificate: enrollment.certificate,
 				privateKey: enrollment.key.toBytes(),
 			},
 			accountAddress: accountAddress,
+			firstname:userProfile.firstname,
+			lastname:userProfile.lastname,
 			mspId: orgMspId,
 			type: 'X.509',
 		};
@@ -101,6 +104,8 @@ exports.registerAndEnrollUser = async (caClient, wallet, orgMspId, userId, affil
 			certificate:enrollment.certificate,
 			accountAddress: accountAddress,
 			mspId: orgMspId,
+			firstname:userProfile.firstname,
+			lastname:userProfile.lastname,
 		};
 
 		return identityResponse

@@ -4,7 +4,7 @@ module.exports = function (app) {
     var commodities = require('../controllers/commoditiesController');
     var loans = require('../controllers/loansController');
     var token = require('../controllers/tokenController');
-    // const auth = require("../middleware/auth");
+    var user = require("../controllers/userController");
 
     //Commodities Routes
     app.route('/funderjet/api/commodity')
@@ -68,4 +68,6 @@ module.exports = function (app) {
     app.route('/funderjet/api/token/statement/:owner')
         .get(token.accountStatement)
 
+    app.route('/funderje/api/user')
+        .post(user.registerUser)
 };

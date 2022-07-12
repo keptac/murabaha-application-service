@@ -8,7 +8,7 @@ const { buildCCPOrg1, buildWallet } = require('../utils/AppUtils');
 const mspOrg1 = 'Org1MSP';
 const walletPath = path.join(__dirname, 'wallet');
 
-exports.enrollUser = async function (req, res) {
+exports.registerUser = async function (req, res) {
     try {
       // Build an in memory object with the network configuration (connection profile)
 		const ccp = buildCCPOrg1();
@@ -18,7 +18,9 @@ exports.enrollUser = async function (req, res) {
 
     // Setup the wallet to hold the credentials of the application user
 		const wallet = await buildWallet(Wallets, walletPath);
-		await registerAndEnrollUser(caClient, wallet, mspOrg1, req.body.org1UserId, 'org1.department1');
+		await registerAndEnrollUser(caClient, wallet, mspOrg1, req.body.userId, 'org1.funderjetuser', req.body);
+
+    
     }
     catch(error){
         console.log(error)
