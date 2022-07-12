@@ -100,10 +100,11 @@ exports.registerAndEnrollUser = async (caClient, wallet, orgMspId, userId, affil
 				privateKey: enrollment.key.toBytes(),
 			},
 			accountAddress: accountAddress,
-			firstname:userProfile.firstname,
-			lastname:userProfile.lastname,
+			firstName:userProfile.firstname,
+			lastName:userProfile.lastname,
+			role: userProfile.role,
 			mspId: orgMspId,
-			type: 'X.509',
+			type: 'X.509'
 		};
 
 		await wallet.put(userId, x509Identity);
@@ -113,8 +114,9 @@ exports.registerAndEnrollUser = async (caClient, wallet, orgMspId, userId, affil
 			success: true,
 			userId:userId,
 			accountAddress: accountAddress,
-			firstname:userProfile.firstname,
-			lastname:userProfile.lastname,
+			firstName:userProfile.firstname,
+			lastName:userProfile.lastname,
+			role: userProfile.role
 		};
 
 		return identityResponse
