@@ -8,6 +8,8 @@ const { buildCCPOrg1, buildWallet } = require('../utils/AppUtils');
 const mspOrg1 = 'Org1MSP';
 const walletPath = path.join(__dirname,'..', 'data','wallet');
 
+var level = require('level');
+
 exports.registerUser = async function (req, res) {
     try {
       // Build an in memory object with the network configuration (connection profile)
@@ -35,7 +37,7 @@ exports.fetchUser = async function (req, res) {
   try {
   const wallet = await buildWallet(Wallets, walletPath);
 
-  const response = await fetchIdentity(wallet, req.body.userId);
+  const response = await fetchIdentity(wallet, req.params.userId);
 
   res.json(response);
   }

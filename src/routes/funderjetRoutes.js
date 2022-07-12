@@ -70,4 +70,7 @@ module.exports = function (app) {
 
     app.route('/funderjet/api/user')
         .post(user.registerUser)
+    
+    app.route('/funderjet/api/user/:userId')
+        .get(user.fetchUser)
 };
