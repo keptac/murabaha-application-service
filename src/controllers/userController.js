@@ -3,10 +3,10 @@
 const { Wallets } = require('fabric-network');
 const FabricCAServices = require('fabric-ca-client');
 const path = require('path');
-const { buildCAClient, registerAndEnrollUser } = require('../utils/CAUtils');
+const { buildCAClient, registerAndEnrollUser, enrollAdmin, fetchIdentity } = require('../utils/CAUtils');
 const { buildCCPOrg1, buildWallet } = require('../utils/AppUtils');
 const mspOrg1 = 'Org1MSP';
-const walletPath = path.join(__dirname, 'wallet');
+const walletPath = path.join(__dirname,'..', 'data','wallet');
 
 exports.registerUser = async function (req, res) {
     try {
@@ -18,14 +18,33 @@ exports.registerUser = async function (req, res) {
 
     // Setup the wallet to hold the credentials of the application user
 		const wallet = await buildWallet(Wallets, walletPath);
-		await registerAndEnrollUser(caClient, wallet, mspOrg1, req.body.userId, 'org1.funderjetuser', req.body);
 
-    
+    await enrollAdmin(caClient, wallet, mspOrg1);
+
+		const response = await registerAndEnrollUser(caClient, wallet, mspOrg1, req.body.userId, 'org1.department1', req.body);
+
+    res.json(response);
     }
     catch(error){
         console.log(error)
         res.send(error);
     }
 };
+
+exports.fetchUser = async function (req, res) {
+  try {
+  const wallet = await buildWallet(Wallets, walletPath);
+
+  const response = await fetchIdentity(wallet, req.body.userId);
+
+  res.json(response);
+  }
+  catch(error){
+      console.log(error)
+      res.send(error);
+  }
+};
+
+
 
 
