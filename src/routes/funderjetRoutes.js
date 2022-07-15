@@ -13,6 +13,9 @@ module.exports = function (app) {
     
     app.route('/funderjet/api/commodity/transfer')
         .post(commodities.transferCommodity)
+    
+    app.route('/funderjet/api/commodity/burn')
+        .post(commodities.burnCommodity)
 
     app.route('/funderjet/api/commodity/:commodityId')
         .get(commodities.readCommodity)
