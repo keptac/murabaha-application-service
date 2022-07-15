@@ -92,6 +92,7 @@ exports.transferCommodity = async function (req, res) {
 exports.burnCommodity = async function (req, res) {
     await initConnection();
     try {
+        
         console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Burn Commodity ---> ');
         console.log(req.body);
         const network = gateway.getNetwork(channelName);
@@ -99,7 +100,10 @@ exports.burnCommodity = async function (req, res) {
         const resultBytes = await contract.submitTransaction('BurnCommodity', req.body.commodityId);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
-        res.json(result)
+        res.json({
+            success:true,
+            body:result
+        })
     }
     catch(error){
         console.log(error)

@@ -10,6 +10,29 @@ const { initializeGRpcConnection } = require('../utils/AppUtils.js');
 let client; 
 let gateway;
 
+
+exports.burnToken = async function (req, res) {
+    await initConnection();
+   try {
+       console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Burn Tokens '+ req.body.value);
+       const network = gateway.getNetwork(channelName);
+       const contract = network.getContract(chaincodeName, 'FTJERC20');
+       const resultBytes = await contract.submitTransaction('Burn', req.body.from, req.body.value);
+       const resultJson = utf8Decoder.decode(resultBytes);
+       const result = JSON.parse(resultJson);
+       res.json(result)
+   }
+   catch(error){
+       console.log(error)
+       res.send(error);
+   }
+   finally {
+       gateway.close();
+       client.close();
+   }
+};
+
+
 /**
  * Get token amount balance of user
  */

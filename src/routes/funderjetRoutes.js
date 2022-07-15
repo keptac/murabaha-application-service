@@ -70,6 +70,9 @@ module.exports = function (app) {
 
     app.route('/funderjet/api/token/statement/:owner')
         .get(token.accountStatement)
+        
+    app.route('/funderjet/api/token/burn')
+        .post(token.burnToken)
 
     app.route('/funderjet/api/user/registration')
         .post(user.registerUser)
