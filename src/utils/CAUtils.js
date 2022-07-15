@@ -96,7 +96,13 @@ exports.registerAndEnrollUser = async (caClient, wallet, orgMspId, userId, affil
 		});
 
 		const randomHex = () => `fx${Math.floor(Math.random() * 0xfffffffffffff).toString(16)}`;
-		const accountAddress = randomHex();
+		var accountAddress;
+		if(userProfile.role=="ADMIN"){
+			 accountAddress = 'fx46049c3413f15'
+		}else{
+			 accountAddress = randomHex();
+		}
+		
 		const x509Identity = {
 			credentials: {
 				certificate: enrollment.certificate,
