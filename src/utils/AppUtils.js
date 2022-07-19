@@ -86,6 +86,7 @@ exports.buildCCPOrg1 = () => {
 	return ccp;
 };
 
+
 //Internal functions
 async function newGrpcConnection() {
     const tlsRootCert = await fs.promises.readFile(tlsCertPath);
