@@ -74,7 +74,7 @@ exports.buildWallet = async (Wallets, walletPath) => {
 };
 
 exports.buildCCPOrg1 = () => {
-	const ccpPath = path.resolve(__dirname, '..', '..', '..', '..', 'fabric-network','test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json');
+	const ccpPath = envOrDefault('CRYPTO_PATH',path.resolve(__dirname, '..', '..', '..', '..', 'fabric-network','test-network', 'organizations', 'peerOrganizations', 'org1.example.com', 'connection-org1.json'));
 	const fileExists = fs.existsSync(ccpPath);
 	if (!fileExists) {
 		throw new Error(`no such file or directory: ${ccpPath}`);
