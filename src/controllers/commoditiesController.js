@@ -21,7 +21,7 @@ exports.createCommodity = async function (req, res) {
 
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.submitTransaction('CreateCommodity', req.body.description, req.body.value, req.body.owner, req.body.ownerId, req.body.commodityName);
+        const resultBytes = await contract.submitTransaction('CreateCommodity', req.body.description, req.body.quantity, req.body.unitPrice, req.body.owner, req.body.ownerId, req.body.commodityName);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)

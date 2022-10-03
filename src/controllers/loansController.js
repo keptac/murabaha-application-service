@@ -21,7 +21,7 @@ let gateway;
 
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName, 'LoanRequest');
-        const resultBytes = await contract.submitTransaction('RequestShariaLoan', req.body.requestorId, req.body.requestorName, req.body.commodityId);
+        const resultBytes = await contract.submitTransaction('RequestShariaLoan', req.body.requestorId, req.body.requestorName, req.body.commodityId, req.body.quantity);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)
