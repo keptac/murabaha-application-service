@@ -1044,6 +1044,99 @@
          }
        }
      },
+
+     "/funderjet/api/users": {
+      "get": {
+        "tags": [
+          "General"
+        ],
+        "summary": "Get all users",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Powered-By": {
+                "schema": {
+                  "type": "string",
+                  "example": "Express"
+                }
+              },
+              "Access-Control-Allow-Origin": {
+                "schema": {
+                  "type": "string",
+                  "example": "*"
+                }
+              },
+              "Access-Control-Allow-Methods": {
+                "schema": {
+                  "type": "string",
+                  "example": "GET,PUT,POST,DELETE,OPTIONS"
+                }
+              },
+              "Access-Control-Allow-Headers": {
+                "schema": {
+                  "type": "string",
+                  "example": "Content-Type"
+                }
+              },
+              "Content-Type": {
+                "schema": {
+                  "type": "string",
+                  "example": "application/json; charset=utf-8"
+                }
+              },
+              "Content-Length": {
+                "schema": {
+                  "type": "integer",
+                  "example": "176"
+                }
+              },
+              "ETag": {
+                "schema": {
+                  "type": "string",
+                  "example": "W/\"b0-+1VtlqYjxep/M3uVxofWNaiRVVI\""
+                }
+              },
+              "Date": {
+                "schema": {
+                  "type": "string",
+                  "example": "Tue, 12 Jul 2022 17:41:23 GMT"
+                }
+              },
+              "Connection": {
+                "schema": {
+                  "type": "string",
+                  "example": "keep-alive"
+                }
+              },
+              "Keep-Alive": {
+                "schema": {
+                  "type": "string",
+                  "example": "timeout=5"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "message": "All Users.",
+                  "users": [{
+                    "success": true,
+                    "userId": "F0079",
+                    "accountAddress": "fxd3545d06cf8cd",
+                    "firstname": "Kelvin",
+                    "lastname": "Chelenje"
+                  }]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
      "/funderjet/api/commodity/balance/fx46049c3413f15": {
        "get": {
          "tags": [
