@@ -77,9 +77,13 @@ module.exports = function (app) {
     app.route('/funderjet/api/token/mint')
         .post(token.mintToken)
 
+        //User apis
     app.route('/funderjet/api/user/registration')
         .post(user.registerUser)
     
     app.route('/funderjet/api/user/:userId')
         .get(user.fetchUser)
+    
+    app.route('/funderjet/api/users')
+        .get(user.fetchAllUsers)
 };
