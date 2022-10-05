@@ -1,155 +1,226 @@
 openapi: 3.0.0
 info:
-  title: Funderjet Remote
-  version: 1.0.0
+  title: Funderjet
+  version: 1.1.0
 servers:
+  - url: localhost://
   - url: http://13.244.76.60:3001
+  - url: http://localhost:3001
+tags:
+  - name: Tokens
+  - name: Commodities
+  - name: Loans
+  - name: SALES
 paths:
-  /funderjet/api/commodity:
+  /funderjet/api/token/balance/fx46049c3413f15:
     get:
       tags:
-        - General
-      summary: Get all commodities
+        - Tokens
+      summary: Get Token Balance for user
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+                example: GET,PUT,POST,DELETE,OPTIONS
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+                example: Content-Type
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '13'
+            ETag:
+              schema:
+                type: string
+                example: W/"d-2/Qw/IbASGIbnuKeOijUZ6Dq4Fo"
+            Date:
+              schema:
+                type: string
+                example: Wed, 05 Oct 2022 09:13:48 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example: 8725927102498
+  /funderjet/api/token/statement/fx46049c3413f15:
+    get:
+      tags:
+        - Tokens
+      summary: Get Account statement by userid
       responses:
         '200':
           description: Successful response
           content:
             application/json: {}
+  /funderjet/api/token/burn:
     post:
       tags:
-        - General
-      summary: Create a Commodity
+        - Tokens
+      summary: Burn Token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                value: '10'
+                from: fx46049c3413f15
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+                example: GET,PUT,POST,DELETE,OPTIONS
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+                example: Content-Type
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '4'
+            ETag:
+              schema:
+                type: string
+                example: W/"4-X/5TO4MPCKAyY0ipFgr6/IraRNs"
+            Date:
+              schema:
+                type: string
+                example: Wed, 05 Oct 2022 09:06:02 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example: true
+  /funderjet/api/token/statement/12345677654:
+    get:
+      tags:
+        - Tokens
+      summary: Account statment
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /funderjet/api/token/mint:
+    post:
+      tags:
+        - Tokens
+      summary: Mint New Tokens
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                amount: '100'
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Powered-By:
+              schema:
+                type: string
+                example: Express
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                example: '*'
+            Access-Control-Allow-Methods:
+              schema:
+                type: string
+                example: GET,PUT,POST,DELETE,OPTIONS
+            Access-Control-Allow-Headers:
+              schema:
+                type: string
+                example: Content-Type
+            Content-Type:
+              schema:
+                type: string
+                example: application/json; charset=utf-8
+            Content-Length:
+              schema:
+                type: integer
+                example: '4'
+            ETag:
+              schema:
+                type: string
+                example: W/"4-X/5TO4MPCKAyY0ipFgr6/IraRNs"
+            Date:
+              schema:
+                type: string
+                example: Wed, 05 Oct 2022 09:13:28 GMT
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Keep-Alive:
+              schema:
+                type: string
+                example: timeout=5
+          content:
+            application/json:
+              schema:
+                type: object
+              example: true
+  /funderjet/api/commodity/burn:
+    post:
+      tags:
+        - Commodities
+      summary: Burn commodity
       requestBody:
         content:
           application/x-www-form-urlencoded:
             schema:
               properties:
-                description:
-                  type: string
-                  example: Test Data
-                owner:
-                  type: string
-                  example: Tadiwa
-                value:
-                  type: integer
-                  example: '500'
-                ownerId:
-                  type: integer
-                  example: '12345'
-                commodityName:
-                  type: string
-                  example: Name of thing
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /funderjet/api/commodity/COM1657613316406:
-    get:
-      tags:
-        - General
-      summary: Get Commodity by ID
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /funderjet/api/commodity/balance/12345:
-    get:
-      tags:
-        - General
-      summary: Get User commodities
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /funderjet/api/loan/customer/12345:
-    get:
-      tags:
-        - General
-      summary: Get Loans by Customer
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /funderjet/api/loan:
-    get:
-      tags:
-        - General
-      summary: Get all loans
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-    post:
-      tags:
-        - General
-      summary: Request Loan
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              properties:
-                requestorId:
-                  type: integer
-                  example: '12345'
                 commodityId:
                   type: string
-                  example: COM1657613316406
-                requestorName:
-                  type: string
-                  example: John Doe
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /funderjet/api/loan/authoriser/12345:
-    get:
-      tags:
-        - General
-      summary: Get loans by Authoriser
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /funderjet/api/loan/authorise:
-    post:
-      tags:
-        - General
-      summary: Authorise Loan Request
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              properties:
-                loanId:
-                  type: string
-                  example: LD1657613334444
-                decision:
-                  type: string
-                  description: APPROVED, IN_PROGRESS, DECLINED, AUTHORISED
-                  example: APPROVED
-                installmentPeriod:
-                  type: integer
-                  example: '12'
-                profitMargin:
-                  type: integer
-                  example: '10'
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /funderjet/api/loan/LD1657613334444:
-    get:
-      tags:
-        - General
-      summary: get single loan
       responses:
         '200':
           description: Successful response
@@ -158,7 +229,7 @@ paths:
   /funderjet/api/commodity/transfer:
     post:
       tags:
-        - General
+        - Commodities
       summary: Transfer Commodity
       requestBody:
         content:
@@ -182,11 +253,161 @@ paths:
           description: Successful response
           content:
             application/json: {}
+  /funderjet/api/commodity:
+    post:
+      tags:
+        - Commodities
+      summary: Create a Commodity
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                description:
+                  type: string
+                  example: New Commodity
+                owner:
+                  type: string
+                  example: FJ Test
+                value:
+                  type: integer
+                  example: '506'
+                ownerId:
+                  type: integer
+                  example: '007'
+                unitPrice:
+                  type: integer
+                  example: '100'
+                quantity:
+                  type: integer
+                  example: '5'
+                commodityName:
+                  type: string
+                  example: PRECIOUS ITEMS
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /funderjet/api/commodity/COM1664803791723:
+    get:
+      tags:
+        - Commodities
+      summary: Get Commodity by ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /funderjet/api/commodity/balance/12345:
+    get:
+      tags:
+        - Commodities
+      summary: Get User commodities
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
   /funderjet/api/commodity/history/COM1657208745095:
     get:
       tags:
-        - General
+        - Commodities
       summary: Get Commodity History
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /funderjet/api/loan/customer/12345:
+    get:
+      tags:
+        - Loans
+      summary: Get Loans by Customer
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /funderjet/api/loan:
+    get:
+      tags:
+        - Loans
+      summary: Get all loans
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Loans
+      summary: Request Loan
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                requestorId:
+                  type: string
+                  example: A47
+                commodityId:
+                  type: string
+                  example: COM1664803791723
+                requestorName:
+                  type: string
+                  example: Agent 47
+                quantity:
+                  type: integer
+                  example: '3'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /funderjet/api/loan/authoriser/12345:
+    get:
+      tags:
+        - Loans
+      summary: Get loans by Authoriser
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /funderjet/api/loan/authorise:
+    post:
+      tags:
+        - Loans
+      summary: Authorise Loan Request
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                loanId:
+                  type: string
+                  example: LD1664803862301
+                decision:
+                  type: string
+                  description: APPROVED, IN_PROGRESS, DECLINED, AUTHORISED
+                  example: APPROVED
+                installmentPeriod:
+                  type: integer
+                  example: '2'
+                profitMargin:
+                  type: integer
+                  example: '10'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /funderjet/api/loan/LD1664803862301:
+    get:
+      tags:
+        - Loans
+      summary: get single loan
       responses:
         '200':
           description: Successful response
@@ -195,7 +416,7 @@ paths:
   /funderjet/api/loan/history/LD1657208779228:
     get:
       tags:
-        - General
+        - Loans
       summary: Get loan History
       responses:
         '200':
@@ -205,7 +426,7 @@ paths:
   /funderjet/api/sales:
     get:
       tags:
-        - General
+        - SALES
       summary: Get all commodity sales
       responses:
         '200':
@@ -214,7 +435,7 @@ paths:
             application/json: {}
     post:
       tags:
-        - General
+        - SALES
       summary: Propose Sale
       requestBody:
         content:
@@ -235,20 +456,10 @@ paths:
           description: Successful response
           content:
             application/json: {}
-  /funderjet/api/token/statement/12345677654:
-    get:
-      tags:
-        - General
-      summary: Account statment
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
   /funderjet/api/authorise-sale:
     post:
       tags:
-        - General
+        - SALES
       summary: Authorise a sale proposal
       requestBody:
         content:
@@ -460,18 +671,11 @@ paths:
                   accountAddress: fxd3545d06cf8cd
                   firstname: Kelvin
                   lastname: Chelenje
-  /funderjet/api/commodity/burn:
-    post:
+  /funderjet/api/commodity/balance/fx46049c3413f15:
+    get:
       tags:
         - General
-      summary: Burn commodity
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              properties:
-                commodityId:
-                  type: string
+      summary: Commodity Balance for user
       responses:
         '200':
           description: Successful response

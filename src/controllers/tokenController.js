@@ -81,6 +81,28 @@ exports.accountStatement = async function (req, res) {
     }
 };
 
+
+exports.mintToken = async function (req, res) {
+    await initConnection();
+   try {
+       console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Mint Tokens '+ req.body.amount);
+       const network = gateway.getNetwork(channelName);
+       const contract = network.getContract(chaincodeName, 'FTJERC20');
+       const resultBytes = await contract.submitTransaction('Mint', req.body.amount);
+       const resultJson = utf8Decoder.decode(resultBytes);
+       const result = JSON.parse(resultJson);
+       res.json(result)
+   }
+   catch(error){
+       console.log(error)
+       res.send(error);
+   }
+   finally {
+       gateway.close();
+       client.close();
+   }
+};
+
 async function initConnection() {
     const connection = await initializeGRpcConnection();
     client = connection.client;

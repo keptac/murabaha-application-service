@@ -1,748 +1,1064 @@
 {
    "openapi": "3.0.0",
    "info": {
-      "version": "1.0.0",
-      "title": "Funderjet Murabaha Application Service",
-      "description": "Sharia Compliance Loan Process smart contract integration service API Documentation",
-      "license": {
-        "name": "MIT",
-        "url": "https://opensource.org/licenses/MIT"
-      }
-    },
+     "title": "Funderjet",
+     "version": "1.1.0"
+   },
    "servers": [
-      {
-         "url": "http://13.244.76.60:3001"
-      }
+     {
+       "url": "http://13.244.76.60:3001"
+     },
+     {
+       "url": "http://localhost:3001"
+     }
+   ],
+   "tags": [
+     {
+       "name": "Tokens"
+     },
+     {
+       "name": "Commodities"
+     },
+     {
+       "name": "Loans"
+     },
+     {
+       "name": "SALES"
+     }
    ],
    "paths": {
-      "/funderjet/api/commodity": {
-         "get": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Get all commodities",
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
+     "/funderjet/api/token/balance/fx46049c3413f15": {
+       "get": {
+         "tags": [
+           "Tokens"
+         ],
+         "summary": "Get Token Balance for user",
+         "responses": {
+           "200": {
+             "description": "OK",
+             "headers": {
+               "X-Powered-By": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Express"
+                 }
+               },
+               "Access-Control-Allow-Origin": {
+                 "schema": {
+                   "type": "string",
+                   "example": "*"
+                 }
+               },
+               "Access-Control-Allow-Methods": {
+                 "schema": {
+                   "type": "string",
+                   "example": "GET,PUT,POST,DELETE,OPTIONS"
+                 }
+               },
+               "Access-Control-Allow-Headers": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Content-Type"
+                 }
+               },
+               "Content-Type": {
+                 "schema": {
+                   "type": "string",
+                   "example": "application/json; charset=utf-8"
+                 }
+               },
+               "Content-Length": {
+                 "schema": {
+                   "type": "integer",
+                   "example": "13"
+                 }
+               },
+               "ETag": {
+                 "schema": {
+                   "type": "string",
+                   "example": "W/\"d-2/Qw/IbASGIbnuKeOijUZ6Dq4Fo\""
+                 }
+               },
+               "Date": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Wed, 05 Oct 2022 09:13:48 GMT"
+                 }
+               },
+               "Connection": {
+                 "schema": {
+                   "type": "string",
+                   "example": "keep-alive"
+                 }
+               },
+               "Keep-Alive": {
+                 "schema": {
+                   "type": "string",
+                   "example": "timeout=5"
+                 }
                }
-            }
+             },
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object"
+                 },
+                 "example": 8725927102498
+               }
+             }
+           }
+         }
+       }
+     },
+     "/funderjet/api/token/statement/fx46049c3413f15": {
+       "get": {
+         "tags": [
+           "Tokens"
+         ],
+         "summary": "Get Account statement by userid",
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
+         }
+       }
+     },
+     "/funderjet/api/token/burn": {
+       "post": {
+         "tags": [
+           "Tokens"
+         ],
+         "summary": "Burn Token",
+         "requestBody": {
+           "content": {
+             "application/json": {
+               "schema": {
+                 "type": "object",
+                 "example": {
+                   "value": "10",
+                   "from": "fx46049c3413f15"
+                 }
+               }
+             }
+           }
          },
-         "post": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Create a Commodity",
-            "requestBody": {
-               "content": {
-                  "application/x-www-form-urlencoded": {
-                     "schema": {
-                        "properties": {
-                           "description": {
-                              "type": "string",
-                              "example": "Test Data"
-                           },
-                           "owner": {
-                              "type": "string",
-                              "example": "Tadiwa"
-                           },
-                           "value": {
-                              "type": "integer",
-                              "example": "500"
-                           },
-                           "ownerId": {
-                              "type": "integer",
-                              "example": "12345"
-                           },
-                           "commodityName": {
-                              "type": "string",
-                              "example": "Name of thing"
-                           }
-                        }
-                     }
-                  }
+         "responses": {
+           "200": {
+             "description": "OK",
+             "headers": {
+               "X-Powered-By": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Express"
+                 }
+               },
+               "Access-Control-Allow-Origin": {
+                 "schema": {
+                   "type": "string",
+                   "example": "*"
+                 }
+               },
+               "Access-Control-Allow-Methods": {
+                 "schema": {
+                   "type": "string",
+                   "example": "GET,PUT,POST,DELETE,OPTIONS"
+                 }
+               },
+               "Access-Control-Allow-Headers": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Content-Type"
+                 }
+               },
+               "Content-Type": {
+                 "schema": {
+                   "type": "string",
+                   "example": "application/json; charset=utf-8"
+                 }
+               },
+               "Content-Length": {
+                 "schema": {
+                   "type": "integer",
+                   "example": "4"
+                 }
+               },
+               "ETag": {
+                 "schema": {
+                   "type": "string",
+                   "example": "W/\"4-X/5TO4MPCKAyY0ipFgr6/IraRNs\""
+                 }
+               },
+               "Date": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Wed, 05 Oct 2022 09:06:02 GMT"
+                 }
+               },
+               "Connection": {
+                 "schema": {
+                   "type": "string",
+                   "example": "keep-alive"
+                 }
+               },
+               "Keep-Alive": {
+                 "schema": {
+                   "type": "string",
+                   "example": "timeout=5"
+                 }
                }
-            },
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
+             },
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object"
+                 },
+                 "example": true
                }
-            }
+             }
+           }
          }
-      },
-      "/funderjet/api/commodity/COM1657613316406": {
-         "get": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Get Commodity by ID",
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
-               }
-            }
+       }
+     },
+     "/funderjet/api/token/statement/12345677654": {
+       "get": {
+         "tags": [
+           "Tokens"
+         ],
+         "summary": "Account statment",
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
          }
-      },
-      "/funderjet/api/commodity/balance/12345": {
-         "get": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Get User commodities",
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
+       }
+     },
+     "/funderjet/api/token/mint": {
+       "post": {
+         "tags": [
+           "Tokens"
+         ],
+         "summary": "Mint New Tokens",
+         "requestBody": {
+           "content": {
+             "application/json": {
+               "schema": {
+                 "type": "object",
+                 "example": {
+                   "amount": "100"
+                 }
                }
-            }
-         }
-      },
-      "/funderjet/api/loan/customer/12345": {
-         "get": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Get Loans by Customer",
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
-               }
-            }
-         }
-      },
-      "/funderjet/api/loan": {
-         "get": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Get all loans",
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
-               }
-            }
+             }
+           }
          },
-         "post": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Request Loan",
-            "requestBody": {
-               "content": {
-                  "application/x-www-form-urlencoded": {
-                     "schema": {
-                        "properties": {
-                           "requestorId": {
-                              "type": "integer",
-                              "example": "12345"
-                           },
-                           "commodityId": {
-                              "type": "string",
-                              "example": "COM1657613316406"
-                           },
-                           "requestorName": {
-                              "type": "string",
-                              "example": "John Doe"
-                           }
-                        }
-                     }
-                  }
+         "responses": {
+           "200": {
+             "description": "OK",
+             "headers": {
+               "X-Powered-By": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Express"
+                 }
+               },
+               "Access-Control-Allow-Origin": {
+                 "schema": {
+                   "type": "string",
+                   "example": "*"
+                 }
+               },
+               "Access-Control-Allow-Methods": {
+                 "schema": {
+                   "type": "string",
+                   "example": "GET,PUT,POST,DELETE,OPTIONS"
+                 }
+               },
+               "Access-Control-Allow-Headers": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Content-Type"
+                 }
+               },
+               "Content-Type": {
+                 "schema": {
+                   "type": "string",
+                   "example": "application/json; charset=utf-8"
+                 }
+               },
+               "Content-Length": {
+                 "schema": {
+                   "type": "integer",
+                   "example": "4"
+                 }
+               },
+               "ETag": {
+                 "schema": {
+                   "type": "string",
+                   "example": "W/\"4-X/5TO4MPCKAyY0ipFgr6/IraRNs\""
+                 }
+               },
+               "Date": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Wed, 05 Oct 2022 09:13:28 GMT"
+                 }
+               },
+               "Connection": {
+                 "schema": {
+                   "type": "string",
+                   "example": "keep-alive"
+                 }
+               },
+               "Keep-Alive": {
+                 "schema": {
+                   "type": "string",
+                   "example": "timeout=5"
+                 }
                }
-            },
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
+             },
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object"
+                 },
+                 "example": true
                }
-            }
+             }
+           }
          }
-      },
-      "/funderjet/api/loan/authoriser/12345": {
-         "get": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Get loans by Authoriser",
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
+       }
+     },
+     "/funderjet/api/commodity/burn": {
+       "post": {
+         "tags": [
+           "Commodities"
+         ],
+         "summary": "Burn commodity",
+         "requestBody": {
+           "content": {
+             "application/x-www-form-urlencoded": {
+               "schema": {
+                 "properties": {
+                   "commodityId": {
+                     "type": "string"
+                   }
+                 }
                }
-            }
-         }
-      },
-      "/funderjet/api/loan/authorise": {
-         "post": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Authorise Loan Request",
-            "requestBody": {
-               "content": {
-                  "application/x-www-form-urlencoded": {
-                     "schema": {
-                        "properties": {
-                           "loanId": {
-                              "type": "string",
-                              "example": "LD1657613334444"
-                           },
-                           "decision": {
-                              "type": "string",
-                              "description": "APPROVED, IN_PROGRESS, DECLINED, AUTHORISED",
-                              "example": "APPROVED"
-                           },
-                           "installmentPeriod": {
-                              "type": "integer",
-                              "example": "12"
-                           },
-                           "profitMargin": {
-                              "type": "integer",
-                              "example": "10"
-                           }
-                        }
-                     }
-                  }
-               }
-            },
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
-               }
-            }
-         }
-      },
-      "/funderjet/api/loan/LD1657613334444": {
-         "get": {
-            "tags": [
-               "General"
-            ],
-            "summary": "get single loan",
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
-               }
-            }
-         }
-      },
-      "/funderjet/api/commodity/transfer": {
-         "post": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Transfer Commodity",
-            "requestBody": {
-               "content": {
-                  "application/x-www-form-urlencoded": {
-                     "schema": {
-                        "properties": {
-                           "commodityId": {
-                              "type": "string",
-                              "example": "COM1657067726910"
-                           },
-                           "newOwner": {
-                              "type": "string",
-                              "example": "Kelvin"
-                           },
-                           "newOwnerId": {
-                              "type": "integer",
-                              "example": "845"
-                           },
-                           "status": {
-                              "type": "string",
-                              "example": "SOLD"
-                           }
-                        }
-                     }
-                  }
-               }
-            },
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
-               }
-            }
-         }
-      },
-      "/funderjet/api/commodity/history/COM1657208745095": {
-         "get": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Get Commodity History",
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
-               }
-            }
-         }
-      },
-      "/funderjet/api/loan/history/LD1657208779228": {
-         "get": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Get loan History",
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
-               }
-            }
-         }
-      },
-      "/funderjet/api/sales": {
-         "get": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Get all commodity sales",
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
-               }
-            }
+             }
+           }
          },
-         "post": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Propose Sale",
-            "requestBody": {
-               "content": {
-                  "application/x-www-form-urlencoded": {
-                     "schema": {
-                        "properties": {
-                           "commodityId": {
-                              "type": "string",
-                              "example": "COM1657612653779"
-                           },
-                           "buyer": {
-                              "type": "string",
-                              "example": "John Snow"
-                           },
-                           "buyerId": {
-                              "type": "integer",
-                              "example": "12345"
-                           }
-                        }
-                     }
-                  }
-               }
-            },
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
-               }
-            }
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
          }
-      },
-      "/funderjet/api/token/statement/12345677654": {
-         "get": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Account statment",
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
+       }
+     },
+     "/funderjet/api/commodity/transfer": {
+       "post": {
+         "tags": [
+           "Commodities"
+         ],
+         "summary": "Transfer Commodity",
+         "requestBody": {
+           "content": {
+             "application/x-www-form-urlencoded": {
+               "schema": {
+                 "properties": {
+                   "commodityId": {
+                     "type": "string",
+                     "example": "COM1657067726910"
+                   },
+                   "newOwner": {
+                     "type": "string",
+                     "example": "Kelvin"
+                   },
+                   "newOwnerId": {
+                     "type": "integer",
+                     "example": "845"
+                   },
+                   "status": {
+                     "type": "string",
+                     "example": "SOLD"
+                   }
+                 }
                }
-            }
+             }
+           }
+         },
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
          }
-      },
-      "/funderjet/api/authorise-sale": {
-         "post": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Authorise a sale proposal",
-            "requestBody": {
-               "content": {
-                  "application/x-www-form-urlencoded": {
-                     "schema": {
-                        "properties": {
-                           "saleId": {
-                              "type": "string",
-                              "example": "SELL1657615492829"
-                           },
-                           "decision": {
-                              "type": "string",
-                              "description": "ACCEPTED, DECLINED",
-                              "example": "ACCEPTED"
-                           }
-                        }
-                     }
-                  }
+       }
+     },
+     "/funderjet/api/commodity": {
+       "post": {
+         "tags": [
+           "Commodities"
+         ],
+         "summary": "Create a Commodity",
+         "requestBody": {
+           "content": {
+             "application/x-www-form-urlencoded": {
+               "schema": {
+                 "properties": {
+                   "description": {
+                     "type": "string",
+                     "example": "New Commodity"
+                   },
+                   "owner": {
+                     "type": "string",
+                     "example": "FJ Test"
+                   },
+                   "value": {
+                     "type": "integer",
+                     "example": "506"
+                   },
+                   "ownerId": {
+                     "type": "integer",
+                     "example": "007"
+                   },
+                   "unitPrice": {
+                     "type": "integer",
+                     "example": "100"
+                   },
+                   "quantity": {
+                     "type": "integer",
+                     "example": "5"
+                   },
+                   "commodityName": {
+                     "type": "string",
+                     "example": "PRECIOUS ITEMS"
+                   }
+                 }
                }
-            },
-            "responses": {
-               "200": {
-                  "description": "OK",
-                  "headers": {
-                     "X-Powered-By": {
-                        "schema": {
-                           "type": "string",
-                           "example": "Express"
-                        }
-                     },
-                     "Access-Control-Allow-Origin": {
-                        "schema": {
-                           "type": "string",
-                           "example": "*"
-                        }
-                     },
-                     "Access-Control-Allow-Methods": {
-                        "schema": {
-                           "type": "string",
-                           "example": "GET,PUT,POST,DELETE,OPTIONS"
-                        }
-                     },
-                     "Access-Control-Allow-Headers": {
-                        "schema": {
-                           "type": "string",
-                           "example": "Content-Type"
-                        }
-                     },
-                     "Content-Type": {
-                        "schema": {
-                           "type": "string",
-                           "example": "application/json; charset=utf-8"
-                        }
-                     },
-                     "Content-Length": {
-                        "schema": {
-                           "type": "integer",
-                           "example": "211"
-                        }
-                     },
-                     "ETag": {
-                        "schema": {
-                           "type": "string",
-                           "example": "W/\"d3-uJj9vkpRJFxb/sqTfO1ft0lvrbc\""
-                        }
-                     },
-                     "Date": {
-                        "schema": {
-                           "type": "string",
-                           "example": "Tue, 12 Jul 2022 08:41:52 GMT"
-                        }
-                     },
-                     "Connection": {
-                        "schema": {
-                           "type": "string",
-                           "example": "keep-alive"
-                        }
-                     },
-                     "Keep-Alive": {
-                        "schema": {
-                           "type": "string",
-                           "example": "timeout=5"
-                        }
-                     }
-                  },
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "type": "object"
-                        },
-                        "example": {
-                           "SaleId": "SELL1657615112493",
-                           "CommodityId": "COM1657612653779",
-                           "BuyerId": "12345",
-                           "Buyer": "Steve",
-                           "SellerId": "67891",
-                           "Seller": "Alice Fisher",
-                           "CommodityValue": "10000",
-                           "Status": "ACCEPTED",
-                           "Timestamp": 1657615310319
-                        }
-                     }
-                  }
-               }
-            }
+             }
+           }
+         },
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
          }
-      },
-      "/funderjet/api/user/registration": {
-         "post": {
-            "tags": [
-               "General"
-            ],
-            "summary": "User registration",
-            "requestBody": {
-               "content": {
-                  "application/x-www-form-urlencoded": {
-                     "schema": {
-                        "properties": {
-                           "userId": {
-                              "type": "string",
-                              "example": "FJ007"
-                           },
-                           "firstName": {
-                              "type": "string",
-                              "example": "FUNDERJET"
-                           },
-                           "lastName": {
-                              "type": "string",
-                              "example": "ADMIN"
-                           },
-                           "role": {
-                              "type": "string",
-                              "example": "ADMIN"
-                           },
-                           "": {
-                              "type": "string"
-                           }
-                        }
-                     }
-                  }
-               }
-            },
-            "responses": {
-               "200": {
-                  "description": "OK",
-                  "headers": {
-                     "X-Powered-By": {
-                        "schema": {
-                           "type": "string",
-                           "example": "Express"
-                        }
-                     },
-                     "Access-Control-Allow-Origin": {
-                        "schema": {
-                           "type": "string",
-                           "example": "*"
-                        }
-                     },
-                     "Access-Control-Allow-Methods": {
-                        "schema": {
-                           "type": "string",
-                           "example": "GET,PUT,POST,DELETE,OPTIONS"
-                        }
-                     },
-                     "Access-Control-Allow-Headers": {
-                        "schema": {
-                           "type": "string",
-                           "example": "Content-Type"
-                        }
-                     },
-                     "Content-Type": {
-                        "schema": {
-                           "type": "string",
-                           "example": "application/json; charset=utf-8"
-                        }
-                     },
-                     "Content-Length": {
-                        "schema": {
-                           "type": "integer",
-                           "example": "116"
-                        }
-                     },
-                     "ETag": {
-                        "schema": {
-                           "type": "string",
-                           "example": "W/\"74-8Ogsx7n6nTDo5LTNSbW9KyiH7Z8\""
-                        }
-                     },
-                     "Date": {
-                        "schema": {
-                           "type": "string",
-                           "example": "Tue, 12 Jul 2022 17:40:02 GMT"
-                        }
-                     },
-                     "Connection": {
-                        "schema": {
-                           "type": "string",
-                           "example": "keep-alive"
-                        }
-                     },
-                     "Keep-Alive": {
-                        "schema": {
-                           "type": "string",
-                           "example": "timeout=5"
-                        }
-                     }
-                  },
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "type": "object"
-                        },
-                        "example": {
-                           "success": true,
-                           "userId": "1234598987",
-                           "accountAddress": "fxd3545d06cf8cd",
-                           "firstname": "Kelvin",
-                           "lastname": "Chelenje"
-                        }
-                     }
-                  }
-               }
-            }
+       }
+     },
+     "/funderjet/api/commodity/COM1664803791723": {
+       "get": {
+         "tags": [
+           "Commodities"
+         ],
+         "summary": "Get Commodity by ID",
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
          }
-      },
-      "/funderjet/api/user/FJ007": {
-         "get": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Get user by id",
-            "responses": {
-               "200": {
-                  "description": "OK",
-                  "headers": {
-                     "X-Powered-By": {
-                        "schema": {
-                           "type": "string",
-                           "example": "Express"
-                        }
-                     },
-                     "Access-Control-Allow-Origin": {
-                        "schema": {
-                           "type": "string",
-                           "example": "*"
-                        }
-                     },
-                     "Access-Control-Allow-Methods": {
-                        "schema": {
-                           "type": "string",
-                           "example": "GET,PUT,POST,DELETE,OPTIONS"
-                        }
-                     },
-                     "Access-Control-Allow-Headers": {
-                        "schema": {
-                           "type": "string",
-                           "example": "Content-Type"
-                        }
-                     },
-                     "Content-Type": {
-                        "schema": {
-                           "type": "string",
-                           "example": "application/json; charset=utf-8"
-                        }
-                     },
-                     "Content-Length": {
-                        "schema": {
-                           "type": "integer",
-                           "example": "176"
-                        }
-                     },
-                     "ETag": {
-                        "schema": {
-                           "type": "string",
-                           "example": "W/\"b0-+1VtlqYjxep/M3uVxofWNaiRVVI\""
-                        }
-                     },
-                     "Date": {
-                        "schema": {
-                           "type": "string",
-                           "example": "Tue, 12 Jul 2022 17:41:23 GMT"
-                        }
-                     },
-                     "Connection": {
-                        "schema": {
-                           "type": "string",
-                           "example": "keep-alive"
-                        }
-                     },
-                     "Keep-Alive": {
-                        "schema": {
-                           "type": "string",
-                           "example": "timeout=5"
-                        }
-                     }
-                  },
-                  "content": {
-                     "application/json": {
-                        "schema": {
-                           "type": "object"
-                        },
-                        "example": {
-                           "userExists": true,
-                           "message": "User identity found.",
-                           "user": {
-                              "success": true,
-                              "userId": "1234598987",
-                              "accountAddress": "fxd3545d06cf8cd",
-                              "firstname": "Kelvin",
-                              "lastname": "Chelenje"
-                           }
-                        }
-                     }
-                  }
-               }
-            }
+       }
+     },
+     "/funderjet/api/commodity/balance/12345": {
+       "get": {
+         "tags": [
+           "Commodities"
+         ],
+         "summary": "Get User commodities",
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
          }
-      },
-      "/funderjet/api/commodity/burn": {
-         "post": {
-            "tags": [
-               "General"
-            ],
-            "summary": "Burn commodity",
-            "requestBody": {
-               "content": {
-                  "application/x-www-form-urlencoded": {
-                     "schema": {
-                        "properties": {
-                           "commodityId": {
-                              "type": "string"
-                           }
-                        }
-                     }
-                  }
-               }
-            },
-            "responses": {
-               "200": {
-                  "description": "Successful response",
-                  "content": {
-                     "application/json": {}
-                  }
-               }
-            }
+       }
+     },
+     "/funderjet/api/commodity/history/COM1657208745095": {
+       "get": {
+         "tags": [
+           "Commodities"
+         ],
+         "summary": "Get Commodity History",
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
          }
-      }
+       }
+     },
+     "/funderjet/api/loan/customer/12345": {
+       "get": {
+         "tags": [
+           "Loans"
+         ],
+         "summary": "Get Loans by Customer",
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
+         }
+       }
+     },
+     "/funderjet/api/loan": {
+       "get": {
+         "tags": [
+           "Loans"
+         ],
+         "summary": "Get all loans",
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
+         }
+       },
+       "post": {
+         "tags": [
+           "Loans"
+         ],
+         "summary": "Request Loan",
+         "requestBody": {
+           "content": {
+             "application/x-www-form-urlencoded": {
+               "schema": {
+                 "properties": {
+                   "requestorId": {
+                     "type": "string",
+                     "example": "A47"
+                   },
+                   "commodityId": {
+                     "type": "string",
+                     "example": "COM1664803791723"
+                   },
+                   "requestorName": {
+                     "type": "string",
+                     "example": "Agent 47"
+                   },
+                   "quantity": {
+                     "type": "integer",
+                     "example": "3"
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
+         }
+       }
+     },
+     "/funderjet/api/loan/authoriser/12345": {
+       "get": {
+         "tags": [
+           "Loans"
+         ],
+         "summary": "Get loans by Authoriser",
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
+         }
+       }
+     },
+     "/funderjet/api/loan/authorise": {
+       "post": {
+         "tags": [
+           "Loans"
+         ],
+         "summary": "Authorise Loan Request",
+         "requestBody": {
+           "content": {
+             "application/x-www-form-urlencoded": {
+               "schema": {
+                 "properties": {
+                   "loanId": {
+                     "type": "string",
+                     "example": "LD1664803862301"
+                   },
+                   "decision": {
+                     "type": "string",
+                     "description": "APPROVED, IN_PROGRESS, DECLINED, AUTHORISED",
+                     "example": "APPROVED"
+                   },
+                   "installmentPeriod": {
+                     "type": "integer",
+                     "example": "2"
+                   },
+                   "profitMargin": {
+                     "type": "integer",
+                     "example": "10"
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
+         }
+       }
+     },
+     "/funderjet/api/loan/LD1664803862301": {
+       "get": {
+         "tags": [
+           "Loans"
+         ],
+         "summary": "get single loan",
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
+         }
+       }
+     },
+     "/funderjet/api/loan/history/LD1657208779228": {
+       "get": {
+         "tags": [
+           "Loans"
+         ],
+         "summary": "Get loan History",
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
+         }
+       }
+     },
+     "/funderjet/api/sales": {
+       "get": {
+         "tags": [
+           "SALES"
+         ],
+         "summary": "Get all commodity sales",
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
+         }
+       },
+       "post": {
+         "tags": [
+           "SALES"
+         ],
+         "summary": "Propose Sale",
+         "requestBody": {
+           "content": {
+             "application/x-www-form-urlencoded": {
+               "schema": {
+                 "properties": {
+                   "commodityId": {
+                     "type": "string",
+                     "example": "COM1657612653779"
+                   },
+                   "buyer": {
+                     "type": "string",
+                     "example": "John Snow"
+                   },
+                   "buyerId": {
+                     "type": "integer",
+                     "example": "12345"
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
+         }
+       }
+     },
+     "/funderjet/api/authorise-sale": {
+       "post": {
+         "tags": [
+           "SALES"
+         ],
+         "summary": "Authorise a sale proposal",
+         "requestBody": {
+           "content": {
+             "application/x-www-form-urlencoded": {
+               "schema": {
+                 "properties": {
+                   "saleId": {
+                     "type": "string",
+                     "example": "SELL1657615492829"
+                   },
+                   "decision": {
+                     "type": "string",
+                     "description": "ACCEPTED, DECLINED",
+                     "example": "ACCEPTED"
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "responses": {
+           "200": {
+             "description": "OK",
+             "headers": {
+               "X-Powered-By": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Express"
+                 }
+               },
+               "Access-Control-Allow-Origin": {
+                 "schema": {
+                   "type": "string",
+                   "example": "*"
+                 }
+               },
+               "Access-Control-Allow-Methods": {
+                 "schema": {
+                   "type": "string",
+                   "example": "GET,PUT,POST,DELETE,OPTIONS"
+                 }
+               },
+               "Access-Control-Allow-Headers": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Content-Type"
+                 }
+               },
+               "Content-Type": {
+                 "schema": {
+                   "type": "string",
+                   "example": "application/json; charset=utf-8"
+                 }
+               },
+               "Content-Length": {
+                 "schema": {
+                   "type": "integer",
+                   "example": "211"
+                 }
+               },
+               "ETag": {
+                 "schema": {
+                   "type": "string",
+                   "example": "W/\"d3-uJj9vkpRJFxb/sqTfO1ft0lvrbc\""
+                 }
+               },
+               "Date": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Tue, 12 Jul 2022 08:41:52 GMT"
+                 }
+               },
+               "Connection": {
+                 "schema": {
+                   "type": "string",
+                   "example": "keep-alive"
+                 }
+               },
+               "Keep-Alive": {
+                 "schema": {
+                   "type": "string",
+                   "example": "timeout=5"
+                 }
+               }
+             },
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object"
+                 },
+                 "example": {
+                   "SaleId": "SELL1657615112493",
+                   "CommodityId": "COM1657612653779",
+                   "BuyerId": "12345",
+                   "Buyer": "Steve",
+                   "SellerId": "67891",
+                   "Seller": "Alice Fisher",
+                   "CommodityValue": "10000",
+                   "Status": "ACCEPTED",
+                   "Timestamp": 1657615310319
+                 }
+               }
+             }
+           }
+         }
+       }
+     },
+     "/funderjet/api/user/registration": {
+       "post": {
+         "tags": [
+           "General"
+         ],
+         "summary": "User registration",
+         "requestBody": {
+           "content": {
+             "application/x-www-form-urlencoded": {
+               "schema": {
+                 "properties": {
+                   "userId": {
+                     "type": "string",
+                     "example": "FJ007"
+                   },
+                   "firstName": {
+                     "type": "string",
+                     "example": "FUNDERJET"
+                   },
+                   "lastName": {
+                     "type": "string",
+                     "example": "ADMIN"
+                   },
+                   "role": {
+                     "type": "string",
+                     "example": "ADMIN"
+                   },
+                   "": {
+                     "type": "string"
+                   }
+                 }
+               }
+             }
+           }
+         },
+         "responses": {
+           "200": {
+             "description": "OK",
+             "headers": {
+               "X-Powered-By": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Express"
+                 }
+               },
+               "Access-Control-Allow-Origin": {
+                 "schema": {
+                   "type": "string",
+                   "example": "*"
+                 }
+               },
+               "Access-Control-Allow-Methods": {
+                 "schema": {
+                   "type": "string",
+                   "example": "GET,PUT,POST,DELETE,OPTIONS"
+                 }
+               },
+               "Access-Control-Allow-Headers": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Content-Type"
+                 }
+               },
+               "Content-Type": {
+                 "schema": {
+                   "type": "string",
+                   "example": "application/json; charset=utf-8"
+                 }
+               },
+               "Content-Length": {
+                 "schema": {
+                   "type": "integer",
+                   "example": "116"
+                 }
+               },
+               "ETag": {
+                 "schema": {
+                   "type": "string",
+                   "example": "W/\"74-8Ogsx7n6nTDo5LTNSbW9KyiH7Z8\""
+                 }
+               },
+               "Date": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Tue, 12 Jul 2022 17:40:02 GMT"
+                 }
+               },
+               "Connection": {
+                 "schema": {
+                   "type": "string",
+                   "example": "keep-alive"
+                 }
+               },
+               "Keep-Alive": {
+                 "schema": {
+                   "type": "string",
+                   "example": "timeout=5"
+                 }
+               }
+             },
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object"
+                 },
+                 "example": {
+                   "success": true,
+                   "userId": "1234598987",
+                   "accountAddress": "fxd3545d06cf8cd",
+                   "firstname": "Kelvin",
+                   "lastname": "Chelenje"
+                 }
+               }
+             }
+           }
+         }
+       }
+     },
+     "/funderjet/api/user/FJ007": {
+       "get": {
+         "tags": [
+           "General"
+         ],
+         "summary": "Get user by id",
+         "responses": {
+           "200": {
+             "description": "OK",
+             "headers": {
+               "X-Powered-By": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Express"
+                 }
+               },
+               "Access-Control-Allow-Origin": {
+                 "schema": {
+                   "type": "string",
+                   "example": "*"
+                 }
+               },
+               "Access-Control-Allow-Methods": {
+                 "schema": {
+                   "type": "string",
+                   "example": "GET,PUT,POST,DELETE,OPTIONS"
+                 }
+               },
+               "Access-Control-Allow-Headers": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Content-Type"
+                 }
+               },
+               "Content-Type": {
+                 "schema": {
+                   "type": "string",
+                   "example": "application/json; charset=utf-8"
+                 }
+               },
+               "Content-Length": {
+                 "schema": {
+                   "type": "integer",
+                   "example": "176"
+                 }
+               },
+               "ETag": {
+                 "schema": {
+                   "type": "string",
+                   "example": "W/\"b0-+1VtlqYjxep/M3uVxofWNaiRVVI\""
+                 }
+               },
+               "Date": {
+                 "schema": {
+                   "type": "string",
+                   "example": "Tue, 12 Jul 2022 17:41:23 GMT"
+                 }
+               },
+               "Connection": {
+                 "schema": {
+                   "type": "string",
+                   "example": "keep-alive"
+                 }
+               },
+               "Keep-Alive": {
+                 "schema": {
+                   "type": "string",
+                   "example": "timeout=5"
+                 }
+               }
+             },
+             "content": {
+               "application/json": {
+                 "schema": {
+                   "type": "object"
+                 },
+                 "example": {
+                   "userExists": true,
+                   "message": "User identity found.",
+                   "user": {
+                     "success": true,
+                     "userId": "1234598987",
+                     "accountAddress": "fxd3545d06cf8cd",
+                     "firstname": "Kelvin",
+                     "lastname": "Chelenje"
+                   }
+                 }
+               }
+             }
+           }
+         }
+       }
+     },
+     "/funderjet/api/commodity/balance/fx46049c3413f15": {
+       "get": {
+         "tags": [
+           "General"
+         ],
+         "summary": "Commodity Balance for user",
+         "responses": {
+           "200": {
+             "description": "Successful response",
+             "content": {
+               "application/json": {}
+             }
+           }
+         }
+       }
+     }
    }
-}
+ }
