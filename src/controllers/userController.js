@@ -67,27 +67,16 @@ exports.fetchUser = async function (req, res) {
 exports.fetchAllUsers = async function (req, res) {
   try {
 
-    var values = await db.iterator().all();
+    var users = [];
+
+    for await (const [key, value] of db.iterator({ gte: '' })) {
+      users.push(JSON.parse(value))
+    }
 
     res.json({
         message: "All Users",
-        user: JSON.parse(values)
+        user: users
       });
-    // return values
-    // res.json({
-    //   message: response.message,
-    //   user: JSON.parse(values)
-    // });
-
-    //   db.getMany([],function(err, value) {    
-    //     if (err) {  
-    //       return handleError(err);  
-    //     }  
-    //     console.log(JSON.parse(value))
-
-       
-    
-    //   });
   }
   catch(error){
       console.log(error)
