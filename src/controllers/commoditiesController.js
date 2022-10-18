@@ -37,12 +37,12 @@ exports.createCommodity = async function (req, res) {
 };
 
 /**
- * Returns all the current commodities on the ledger
+ * Returns all the current commodities on the market
  */
-exports.getAllCommodities = async function (req, res) {
+exports.getAllMarketCommodities = async function (req, res) {
     await initConnection();
     try {
-        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Commodities');
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Market Commodities');
 
         // Get a network instance representing the channel where the smart contract is deployed.
         const network = gateway.getNetwork(channelName);
@@ -74,6 +74,28 @@ exports.transferCommodity = async function (req, res) {
         const network = gateway.getNetwork(channelName);
         const contract = network.getContract(chaincodeName);
         const resultBytes = await contract.submitTransaction('TransferCommodity', req.body.commodityId, req.body.newOwner, req.body.newOwnerId, req.body.status);
+        const resultJson = utf8Decoder.decode(resultBytes);
+        const result = JSON.parse(resultJson);
+        res.json(result)
+    }
+    catch(error){
+        console.log(error)
+        res.send(error);
+    }
+    finally {
+        gateway.close();
+        client.close();
+    }
+};
+
+exports.transferPartOfCommodity = async function (req, res) {
+    await initConnection();
+    try {
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Transaction: Transfer part of Commodity ---> ');
+        console.log(req.body);
+        const network = gateway.getNetwork(channelName);
+        const contract = network.getContract(chaincodeName);
+        const resultBytes = await contract.submitTransaction('TransferPartOfCommodity', req.body.commodityId, req.body.newOwner, req.body.newOwnerId, req.body.status , req.body.quantityRequested);
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)

@@ -230,7 +230,7 @@ paths:
     post:
       tags:
         - Commodities
-      summary: Transfer Commodity
+      summary: Delist a commodity - should be used only by commodity owners
       requestBody:
         content:
           application/x-www-form-urlencoded:
@@ -248,11 +248,43 @@ paths:
                 status:
                   type: string
                   example: SOLD
+                quantityRequested:
+                  type: integer
+                  example: 5
       responses:
         '200':
           description: Successful response
           content:
             application/json: {}
+
+    /funderjet/api/commodity/delist:
+      post:
+        tags:
+          - Commodities
+        summary: Transfer Commodity
+        requestBody:
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                properties:
+                  commodityId:
+                    type: string
+                    example: COM1657067726910
+                  newOwner:
+                    type: string
+                    example: Kelvin
+                  newOwnerId:
+                    type: integer
+                    example: '845'
+                  status:
+                    type: string
+                    example: SOLD
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json: {}
+    
   /funderjet/api/commodity:
     post:
       tags:
