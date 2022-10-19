@@ -48,7 +48,7 @@ exports.getAllMarketCommodities = async function (req, res) {
         const network = gateway.getNetwork(channelName);
         // Get the smart contract from the network.
         const contract = network.getContract(chaincodeName);
-        const resultBytes = await contract.evaluateTransaction('GetAllCommodities');
+        const resultBytes = await contract.evaluateTransaction('GetAllMarketCommodities');
         const resultJson = utf8Decoder.decode(resultBytes);
         const result = JSON.parse(resultJson);
         res.json(result)
@@ -62,6 +62,34 @@ exports.getAllMarketCommodities = async function (req, res) {
         client.close();
     }
 };
+
+/**
+ * Returns all the transfered commodities nolonger on the market
+ */
+exports.getAllTransferedCommodities = async function (req, res) {
+    await initConnection();
+    try {
+        console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Evaluate Transaction: Get All Transfered Commodities');
+
+        // Get a network instance representing the channel where the smart contract is deployed.
+        const network = gateway.getNetwork(channelName);
+        // Get the smart contract from the network.
+        const contract = network.getContract(chaincodeName);
+        const resultBytes = await contract.evaluateTransaction('GetAllRequestedCommodities');
+        const resultJson = utf8Decoder.decode(resultBytes);
+        const result = JSON.parse(resultJson);
+        res.json(result)
+    }
+    catch(error){
+        console.log(error)
+        res.send(error);
+    }
+    finally {
+        gateway.close();
+        client.close();
+    }
+};
+
 
 /**
  * Transfer Commodity transaction synchronously

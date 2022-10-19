@@ -10,6 +10,9 @@ module.exports = function (app) {
     app.route('/funderjet/api/commodity')
         .post(commodities.createCommodity)
         .get(commodities.getAllMarketCommodities);
+        
+    app.route('/funderjet/api/commodity/transfered')
+        .get(commodities.getAllTransferedCommodities);
     
     app.route('/funderjet/api/commodity/transfer')
         .post(commodities.transferCommodity)

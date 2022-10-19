@@ -321,6 +321,26 @@ paths:
           description: Successful response
           content:
             application/json: {}
+  /funderjet/api/commodity/:
+    get:
+      tags:
+        - Commodities
+      summary: Gets all commodities on the marketpalce
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /funderjet/api/commodity/transfered:
+    get:
+      tags:
+        - Commodities
+      summary: Gets all transfered commodities nolonger on the marketpalce
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
   /funderjet/api/commodity/COM1664803791723:
     get:
       tags:
