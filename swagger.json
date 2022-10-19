@@ -469,10 +469,6 @@
                      "type": "string",
                      "example": "FJ Test"
                    },
-                   "value": {
-                     "type": "integer",
-                     "example": "506"
-                   },
                    "ownerId": {
                      "type": "integer",
                      "example": "007"
