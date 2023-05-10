@@ -4,7 +4,7 @@ info:
   version: 1.1.0
 servers:
   - url: localhost://
-  - url: http://13.244.76.60:3001
+  - url: http://13.246.52.70:3001
   - url: http://localhost:3001
 tags:
   - name: Tokens
