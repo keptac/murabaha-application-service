@@ -1,4 +1,5 @@
 'use strict';
+import moment from 'moment/moment';
 
 const { Wallets } = require('fabric-network');
 const FabricCAServices = require('fabric-ca-client');

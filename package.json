@@ -37,7 +37,7 @@
     "fabric-network": "^2.2.13",
     "jsonwebtoken": "^8.5.1",
     "level": "^8.0.0",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "swagger-ui-express": "^4.4.0"
   },
   "devDependencies": {
