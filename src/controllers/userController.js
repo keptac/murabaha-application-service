@@ -1,5 +1,4 @@
 'use strict';
-import moment from 'moment/moment';
 
 const { Wallets } = require('fabric-network');
 const FabricCAServices = require('fabric-ca-client');
@@ -10,6 +9,7 @@ const mspOrg1 = 'Org1MSP';
 const walletPath = path.join(__dirname,'..', 'data','wallet');
 
 var db = require('../middleware/db');
+const moment = require('moment/moment');
 
 exports.registerUser = async function (req, res) {
   console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Registration request '+ req.body);
