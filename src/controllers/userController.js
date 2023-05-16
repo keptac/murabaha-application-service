@@ -11,6 +11,7 @@ const walletPath = path.join(__dirname,'..', 'data','wallet');
 var db = require('../middleware/db');
 
 exports.registerUser = async function (req, res) {
+  console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Submit Registration request '+ req.body);
     try {
       // Build an in memory object with the network configuration (connection profile)
 		const ccp = buildCCPOrg1();
@@ -35,6 +36,8 @@ exports.registerUser = async function (req, res) {
 };
 
 exports.fetchUser = async function (req, res) {
+  console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Fetch user '+ req.params.userId);
+   
   try {
     const wallet = await buildWallet(Wallets, walletPath);
     const response = await fetchIdentity(wallet, req.params.userId);
@@ -65,6 +68,8 @@ exports.fetchUser = async function (req, res) {
 };
 
 exports.fetchAllUsers = async function (req, res) {
+  console.log('\n' + moment(Date().toISOString).format('YYYY-MM-DD HH:mm:ss') + ' Fetch All users');
+   
   try {
 
     var users = [];
